@@ -1,0 +1,57 @@
+<html>
+<head><title>Edit trip</title></head>
+
+<body bgcolor="#FFFFFF">
+<h1>Edit trip</h1>
+
+#if $error {
+<table>
+<tr><td><font color="#FF0000">$error</font></td></tr>
+</table>
+}
+
+#if $invalid_data {
+<table>
+<tr><td><font color="#FF0000">$invalid_data</font></td></tr>
+</table>
+}
+
+#if $trip {
+<form action="edittrip.wm">
+<input type="hidden" name="tripid" value="$trip.tripid">
+<input type="hidden" name="action" value="update">
+
+<table cellpadding="4" cellspacing="0" border="0">
+<tr><td bgcolor="#99CC66" colspan="2">
+<b>Edit trip</b></td></td>
+
+<tr><td align="right">Destination</td>
+<td><input type="text" name="destination" value="$trip.destination"></td></tr>
+<tr><td align="right">Begins</td>
+<td><input type="text" name="begins" value="$trip.begins"></td></tr>
+<tr><td align="right">Ends</td>
+<td><input type="text" name="ends" value="$trip.ends"></td></tr>
+
+<tr><td colspan="2" align="right" bgcolor="#CCFF99">
+<input type="submit" name="submit" value="Update"></td></tr>
+</form>
+
+<tr><td colspan="2">&nbsp;</td></td>
+
+<tr><td bgcolor="#99CC66" colspan="2">
+<b>Delete trip</b></td></td>
+
+<form action="edittrip.wm">
+<input type="hidden" name="tripid" value="$trip.tripid">
+<input type="hidden" name="action" value="delete">
+<tr><td colspan="2" align="right" bgcolor="#CCFF99">
+<input type="submit" name="submit" value="Delete"></td></tr>
+</form>
+
+</table>
+}
+
+#include "/export/wayward/pages/whowhere/footer.html"
+
+</body>
+</html>

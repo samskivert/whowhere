@@ -1,0 +1,44 @@
+<html>
+<head><title>Create trip</title></head>
+
+<body bgcolor="#FFFFFF">
+<h1>Create trip</h1>
+
+#if $error {
+<table>
+<tr><td><font color="#FF0000">$error</font></td></tr>
+</table>
+}
+
+#if $invalid_data {
+<table>
+<tr><td><font color="#FF0000">$invalid_data</font></td></tr>
+</table>
+}
+
+#if !$noform {
+<form action="newtrip.wm">
+<input type="hidden" name="action" value="create">
+
+<table cellpadding="4" cellspacing="0" border="0">
+<tr><td bgcolor="#99CC66" colspan="2">
+<b>Create a new trip</b></td></td>
+
+<tr><td align="right">Destination</td>
+<td><input type="text" name="destination" value="$Form.destination"></td></tr>
+<tr><td align="right">Begins</td>
+<td><input type="text" name="begins" value="$Form.begins"></td></tr>
+<tr><td align="right">Ends</td>
+<td><input type="text" name="ends" value="$Form.ends"></td></tr>
+
+<tr><td colspan="2" align="right" bgcolor="#CCFF99">
+<input type="submit" name="submit" value="Create"></td></tr>
+</table>
+
+</form>
+}
+
+#include "/export/wayward/pages/whowhere/footer.html"
+
+</body>
+</html>

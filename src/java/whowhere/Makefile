@@ -4,8 +4,7 @@
 ROOT = ..
 
 SRCS = \
-	Repository.java \
-	RepositoryTest.java \
-	Trip.java \
+	Log.java \
+	WhoWhere.java \
 
 include $(ROOT)/build/Makefile.java

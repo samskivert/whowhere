@@ -1,11 +1,11 @@
 //
 // $Id$
 
-package whowhere;
+package whowhere.data;
 
 import java.sql.Date;
 
-public class Trip
+public class Trip implements Comparable
 {
     public int tripid;
 
@@ -16,6 +16,11 @@ public class Trip
     public Date begins;
 
     public Date ends;
+
+    public int compareTo (Object other)
+    {
+	return begins.compareTo(((Trip)other).begins);
+    }
 
     public String toString ()
     {

@@ -1,0 +1,54 @@
+<html>
+<head><title>Upcoming trips</title></head>
+
+<body bgcolor="#FFFFFF">
+<h1>Upcoming trips</h1>
+
+#if $error {
+<table>
+<tr><td><font color="#FF0000">$error</font></td></tr>
+</table>
+<hr>
+}
+
+#if $markers {
+<table cellpadding="10" cellspacing="4" border="0">
+<tr><th>&nbsp;</th>
+#foreach $name in $names {
+<th>$name</th>
+}
+#foreach $marker in $markers {
+#if ($marker.column == 0) {
+<!--<tr><td colspan="4" bgcolor="#000000" height="2"></td></tr>-->
+<tr>
+}
+<td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor()">
+$marker.text()
+#if (($userid != -1) && ($userid == $marker.owner())) {
+<br><a href="edittrip.wm?tripid=$marker.tripid()">[edit]</a>
+}
+</td>
+}
+</table>
+} #else {
+<table cellpadding="10" cellspacing="4" border="0">
+<tr><td valign="top" bgcolor="#99CC66">
+No trips fall into the selected time frame.
+</td></tr>
+</table>
+}
+
+<form action="calendar.wm">
+<table>
+<tr><td>Viewing trips from</td>
+<td><input type="text" name="begin" value="$Form.begin"></td>
+<td>to</td>
+<td><input type="text" name="end" value="$Form.end"></td>
+<td><input type="submit" name="submit" value="Query"></td></tr>
+</table>
+</form>
+
+#include "/export/wayward/pages/whowhere/footer.html"
+
+</body>
+</html>

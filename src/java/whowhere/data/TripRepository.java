@@ -1,7 +1,7 @@
 //
 // $Id$
 
-package whowhere;
+package whowhere.data;
 
 import java.sql.*;
 import java.util.List;
@@ -75,8 +75,7 @@ public class Repository extends MySQLRepository
 	throws SQLException
     {
 	Cursor tc = _ttable.select("where ends >= '" + endingAfter +
-				   "' AND begins <= '" + startingBefore +
-				   "'");
+				   "' AND begins <= '" + startingBefore + "'");
 	List tlist = tc.toArrayList();
 	Trip[] trips = new Trip[tlist.size()];
 	tlist.toArray(trips);

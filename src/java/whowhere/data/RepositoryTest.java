@@ -1,7 +1,7 @@
 //
 // $Id$
 
-package whowhere;
+package whowhere.data;
 
 import java.sql.Date;
 import java.util.Calendar;
