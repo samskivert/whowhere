@@ -1,0 +1,53 @@
+#set $title = $Msg.accept.title
+#parse "/header.wm"
+
+#if (!$error)
+#if ($need_account)
+<table cellpadding="6" cellspacing="0" border="0" width="600">
+<tr><td>$Msg.accept.banner($inviter)
+<p>$Msg.accept.explain</td></tr>
+<tr><td>
+<table cellpadding="0" cellspacing="0" border="0">
+<tr><td>
+   <!-- sample calendar -->
+  <table cellpadding="6" cellspacing="2" border="0"><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Jun 1</td><td valign="top" rowspan="3" bgcolor="#6699CC"><b>Graceland</b><br>
+      <div class="small">
+      Jun 1 to Jun 15<br>Meet with cabal; have some of that tasty fried chicken</div></td><td valign="top" rowspan="1" bgcolor="#CCCCCC">&nbsp;</td><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Jun 12</td><td valign="top" rowspan="3" bgcolor="#CC6600"><b>Kennebunkport, ME</b><br>
+      <div class="small">
+      Jun 12 to Jun 18<br>Pow wow with Pop to learn about this President thing</div><br><u>[edit]</u></td><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Jun 15</td><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Jun 18</td><td valign="top" rowspan="1" bgcolor="#CCCCCC">&nbsp;</td><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Aug 5</td><td valign="top" rowspan="3" bgcolor="#6699CC"><b>Wichita, KS</b><br>
+      <div class="small">
+      Aug 5 to Aug 9<br>Make some appearances in phone booths and Safeway parking lots</div></td><td valign="top" rowspan="1" bgcolor="#CCCCCC">&nbsp;</td><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Aug 8</td><td valign="top" rowspan="2" bgcolor="#CC6600"><b>Wichita, KS</b><br>
+      <div class="small">
+      Aug 8 to Aug 9<br>Heard Elvis was going to be in town</div><br><u>[edit]</u></td><tr><td valign="top" rowspan="1" bgcolor="#CCFF99">Aug 9</td></table>
+  </td><td valign="top">
+  <table cellpadding="4" cellspacing="2" border="0">
+  <tr><td><b>Key</b></td><tr><td bgcolor="#6699CC">elvis</td><tr><td bgcolor="#CC6600">georgew</td></tr>
+  </table>
+  <!-- end sample calendar -->
+  </td></table>
+</td></tr>
+<tr><td>$Msg.accept.need_account("/usermgmt/login.wm?from=$from", "/usermgmt/register.wm?from=$from")</td></tr>
+<tr><td>$Msg.accept.closing_remarks</td></tr>
+</table>
+#else
+<table cellpadding="6" cellspacing="0" border="0" width="600">
+<tr><td>$Msg.accept.invitation($inviter)</td></tr>
+</table>
+
+<p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr><td bgcolor="$tcolor" colspan="4">
+<b>$Msg.accept.accept.title</b></td></td>
+
+<form action="accept.wm">
+<input type="hidden" name="action" value="accept">
+<input type="hidden" name="who" value="$Form.who">
+
+<tr><td colspan="4" align="right" bgcolor="$scolor">
+<input type="submit" name="submit" value="$Msg.accept.accept.submit"></td></tr>
+</form>
+</table>
+#end
+#end
+
+#parse "/footer.wm"

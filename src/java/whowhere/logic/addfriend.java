@@ -3,14 +3,16 @@
 
 package whowhere.logic;
 
-import java.util.Date;
 import java.util.Hashtable;
+import javax.servlet.http.HttpServletRequest;
 
 import org.webmacro.*;
 import org.webmacro.servlet.WebContext;
+
 import com.samskivert.net.MailUtil;
 import com.samskivert.servlet.user.*;
 import com.samskivert.webmacro.*;
+import com.samskivert.util.StringUtil;
 
 import whowhere.Log;
 import whowhere.WhoWhere;
@@ -44,8 +46,9 @@ public class addfriend implements Logic
             if (MailUtil.isValidAddress(address)) {
                 // generate the mail message
                 String sender = user.realname + "<" + user.email + ">";
+                String url = constructURL(ctx.getRequest(), user);
                 String text = generateMailText(user.realname, sender, address,
-                                               subject, "(url)", etmpl, ctx);
+                                               subject, url, etmpl, ctx);
                 // and send it
                 MailUtil.deliverMail(text);
                 // let the user know we sent it
@@ -67,10 +70,11 @@ public class addfriend implements Logic
 	    ctx.put("Form", defaults);
 
             // stick a default email in the context
+            String url = constructURL(ctx.getRequest(), user);
             String msg = generateMailText("(Your name here)",
                                           "(you &lt;your email&gt;)",
                                           "(them)", "(Your subject here)",
-                                          "(some hairy URL)", etmpl, ctx);
+                                          url, etmpl, ctx);
             ctx.put("email", msg);
 	}
 
@@ -104,5 +108,19 @@ public class addfriend implements Logic
             Log.warning("Error executing email template: " + e);
             return "";
         }
+    }
+
+    protected String constructURL (HttpServletRequest req, User user)
+    {
+        StringBuffer url = new StringBuffer("http://");
+        url.append(req.getServerName());
+        if (req.getServerPort() != 80) {
+            url.append(":").append(req.getServerPort());
+        }
+        String uri = StringUtil.replace(req.getRequestURI(),
+                                        "addfriend.wm", "accept.wm");
+        url.append(uri);
+        url.append("?who=").append(user.userid);
+        return url.toString();
     }
 }

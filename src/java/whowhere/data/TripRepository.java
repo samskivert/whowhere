@@ -86,7 +86,7 @@ public class Repository extends MySQLRepository
 
         // first we have to look up the travelerids of this traveler's
         // circle of friends
-        int[] tids = loadCircle(travelerid);
+        int[] tids = loadCircle(travelerid, true);
         String tidstr = StringUtil.toString(tids);
 
         // now we can look up the trips
@@ -99,15 +99,28 @@ public class Repository extends MySQLRepository
 	return trips;
     }
 
-    protected int[] loadCircle (int travelerid)
+    /**
+     * Loads the userids of the friends in the circle of the specified
+     * traveler.
+     *
+     * @param includeTraveler if true, the traveler will be included in
+     * the list; if false only the friends.
+     *
+     * @return An array containing the userids of the friends of the
+     * specified traveler. An array is always returned, never null.
+     */
+    public int[] loadCircle (int travelerid, boolean includeTraveler)
 	throws SQLException
     {
         // make sure our session is established
         ensureConnection();
 
-        // add the travler themselves to their circle
         ArrayList flist = new ArrayList();
-        flist.add(new Integer(travelerid));
+
+        // add the travler themselves to their circle if requested
+        if (includeTraveler) {
+            flist.add(new Integer(travelerid));
+        }
 
         // now look up their friends
 	Statement stmt = _session.connection.createStatement();
@@ -169,6 +182,29 @@ public class Repository extends MySQLRepository
                                    ", " + tid1 + ")");
             }
 
+        } finally {
+            stmt.close();
+        }
+    }
+
+    /**
+     * Removes the link between two travelers in the friends table.
+     */
+    public void excommunicate (int tid1, int tid2)
+        throws SQLException
+    {
+        // make sure our session is established
+        ensureConnection();
+
+	Statement stmt = _session.connection.createStatement();
+        try {
+            // simply remove both rows
+            stmt.executeUpdate("delete from friends where " +
+                               "travelerid = " + tid1 +
+                               " AND friendid = " + tid2);
+            stmt.executeUpdate("delete from friends where " +
+                               "travelerid = " + tid2 +
+                               " AND friendid = " + tid1);
         } finally {
             stmt.close();
         }

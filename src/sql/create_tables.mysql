@@ -26,6 +26,7 @@ CREATE TABLE trips (
  */
 DROP TABLE IF EXISTS friends;
 CREATE TABLE friends (
-	travelerid INTEGER(10) PRIMARY KEY,
-	friendid   INTEGER(10) NOT NULL
+	travelerid INTEGER(10) NOT NULL,
+	friendid   INTEGER(10) NOT NULL,
+        KEY traveler_index (travelerid)
 );

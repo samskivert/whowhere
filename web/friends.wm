@@ -1,0 +1,24 @@
+#set $title = $Msg.friends.title
+#parse "/header.wm"
+
+<p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr><td bgcolor="$tcolor" colspan="2">
+<b>$Msg.friends.friends.title</b></td></td>
+
+## this is an annoying webmacro hack. i wish it were easier to iterate
+## over two arrays at once
+#set $iter = 0
+#foreach $fid in $fids
+<form action="friends.wm">
+<input type="hidden" name="action" value="delete">
+<input type="hidden" name="who" value="$fid">
+<tr><td>$names.get($iter)</td>
+<td><input type="submit" name="submit"
+     value="$Msg.friends.friends.submit"></td></tr>
+</form>
+#set $iter = $iter + 1
+#end
+</table>
+
+#parse "/footer.wm"
