@@ -1,46 +1,52 @@
 #set $title = $Msg.calendar.title
-#parse "/whowhere/header.wm"
+#parse "/header.wm"
 
-#if (!$error) {
+#if (!$error)
 <table cellpadding="6" cellspacing="0" border="0" width="600">
 <tr><td>$Msg.calendar.howto("newtrip.wm")</td></tr>
 </table>
-}
+#end
 
-#if $markers {
-<table cellpadding="10" cellspacing="4" border="0">
-<tr><th>&nbsp;</th>
-#foreach $name in $names {
-<th>$name</th>
-}
-#foreach $marker in $markers {
-#if ($marker.column == 0) {
-<tr>
-}
-<td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor()">
-#if ($marker.trip) {
-<b>$marker.trip.destination</b><br>
-<div class="small">$Msg.calendar.duration($marker.begins(), $marker.ends())
-#if ($marker.trip.description) {
-<br>$marker.trip.description
-}
-</div>
-} #else {
-$marker.text()
-}
-#if (($userid != -1) && ($userid == $marker.owner())) {
-<br><a href="edittrip.wm?tripid=$marker.tripid()">[edit]</a>
-}
-</td>
-}
+#if ($markers)
+<table cellpadding="5" cellspacing="4" border="0">
+<tr><td><b>Key</b></td>
+#set $i = 0
+#foreach $name in $names
+<td bgcolor="$colors.get($i)">$name</td>
+#set $i = $i + 1
+#end
+</tr>
 </table>
-} #else {
+#else
 <table cellpadding="10" cellspacing="4" border="0">
 <tr><td valign="top" bgcolor="$tcolor">
 $Msg.calendar.no_trips
 </td></tr>
 </table>
-}
+#end
+
+<table cellpadding="10" cellspacing="4" border="0">
+#foreach $marker in $markers
+#if ($marker.column == 0)
+<tr>
+#end
+<td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor">
+#if ($marker.trip)
+<b>$marker.trip.destination</b><br>
+<div class="small">$Msg.calendar.duration($marker.begins(), $marker.ends())
+#if ($marker.trip.description)
+<br>$marker.trip.description
+#end
+</div>
+#else
+$marker.text()
+#end
+#if (($userid != -1) && ($userid == $marker.owner()))
+<br><a href="edittrip.wm?tripid=$marker.tripid()">[edit]</a>
+#end
+</td>
+#end
+</table>
 
 <form action="calendar.wm">
 <table>
@@ -52,4 +58,4 @@ $Msg.calendar.no_trips
 </table>
 </form>
 
-#parse "/whowhere/footer.wm"
+#parse "/footer.wm"
