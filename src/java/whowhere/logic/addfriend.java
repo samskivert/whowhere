@@ -4,6 +4,7 @@
 package whowhere.logic;
 
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Random;
@@ -122,7 +123,11 @@ public class addfriend implements Logic
         int random = new Random().nextInt(100);
         url.append("&when=").append(random);
         String hash = Crypt.crypt(Integer.toString(random), user.password);
-        url.append("&how=").append(URLEncoder.encode(hash));
+        try {
+            url.append("&how=").append(URLEncoder.encode(hash, "UTF-8"));
+        } catch (UnsupportedEncodingException uee) {
+            Log.warning("Unsupported encoding " + uee);
+        }
         return url.toString();
     }
 }
