@@ -53,7 +53,7 @@
 
   <!-- builds our distribution files (war and jar) -->
   <target name="dist" depends="prepare,compile">
-    <jar jarfile="${dist.war}"
+    <jar file="${dist.war}"
          basedir="${deploy.home}"/>
   </target>
 
