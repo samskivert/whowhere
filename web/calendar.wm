@@ -1,15 +1,5 @@
-<html>
-<head><title>Upcoming trips</title></head>
-
-<body bgcolor="#FFFFFF">
-<h1>Upcoming trips</h1>
-
-#if $error {
-<table>
-<tr><td><font color="#FF0000">$error</font></td></tr>
-</table>
-<hr>
-}
+#set $title = "Upcoming trips"
+#parse "/whowhere/header.wm"
 
 #if $markers {
 <table cellpadding="10" cellspacing="4" border="0">
@@ -48,7 +38,4 @@ No trips fall into the selected time frame.
 </table>
 </form>
 
-#include "/export/wayward/pages/whowhere/footer.html"
-
-</body>
-</html>
+#parse "/whowhere/footer.wm"

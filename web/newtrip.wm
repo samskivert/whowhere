@@ -1,21 +1,7 @@
-<html>
-<head><title>Create trip</title></head>
+#set $title = "New trip"
+#parse "/whowhere/header.wm"
 
-<body bgcolor="#FFFFFF">
-<h1>Create trip</h1>
-
-#if $error {
-<table>
-<tr><td><font color="#FF0000">$error</font></td></tr>
-</table>
-}
-
-#if $invalid_data {
-<table>
-<tr><td><font color="#FF0000">$invalid_data</font></td></tr>
-</table>
-}
-
+<p>
 #if !$noform {
 <form action="newtrip.wm">
 <input type="hidden" name="action" value="create">
@@ -38,7 +24,4 @@
 </form>
 }
 
-#include "/export/wayward/pages/whowhere/footer.html"
-
-</body>
-</html>
+#parse "/whowhere/footer.wm"

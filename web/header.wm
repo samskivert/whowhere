@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Who, Where, When: $title</title>
+<link rel="stylesheet" type="text/css" href="/whowhere/style.css">
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<table cellpadding=6 cellspacing=0 border=0 width="600">
+<tr bgcolor="#CCCCCC"><td align=right>
+<span class="big"><b>Who, Where, When</b></span><br>
+$title<br>
+</td>
+</table>
+
+#if $error {
+<p>
+<table>
+<tr><td><font color="#FF0000">$error</font></td></tr>
+</table>
+}

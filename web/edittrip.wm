@@ -1,21 +1,7 @@
-<html>
-<head><title>Edit trip</title></head>
+#set $title = "Edit trip"
+#parse "/whowhere/header.wm"
 
-<body bgcolor="#FFFFFF">
-<h1>Edit trip</h1>
-
-#if $error {
-<table>
-<tr><td><font color="#FF0000">$error</font></td></tr>
-</table>
-}
-
-#if $invalid_data {
-<table>
-<tr><td><font color="#FF0000">$invalid_data</font></td></tr>
-</table>
-}
-
+<p>
 #if $trip {
 <form action="edittrip.wm">
 <input type="hidden" name="tripid" value="$trip.tripid">
@@ -51,7 +37,4 @@
 </table>
 }
 
-#include "/export/wayward/pages/whowhere/footer.html"
-
-</body>
-</html>
+#parse "/whowhere/footer.wm"
