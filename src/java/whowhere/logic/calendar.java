@@ -6,7 +6,7 @@ package whowhere.logic;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.samskivert.util.IntIntMap;
+import com.samskivert.util.IntMap;
 import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
 import org.webmacro.servlet.WebContext;
@@ -74,27 +74,36 @@ public class calendar implements Logic
 	// sort our trips by start date
 	Arrays.sort(trips);
 
-	// figure out how many travelers are involved and assign each
-	// traveler to a column
-	IntIntMap ttable = new IntIntMap();
-	ArrayList tnames = new ArrayList();
-	int column = 1; // column zero is for the dates
+	// figure out which travelers are involved and assign colors
+        IntMap tmap = new IntMap();
+        int cidx = 0;
 	for (int i = 0; i < trips.length; i++) {
 	    Trip t = trips[i];
-	    if (!ttable.contains(t.travelerid)) {
-		ttable.put(t.travelerid, column++);
-		tnames.add(new Integer(t.travelerid));
-	    }
+            if (!tmap.contains(t.travelerid)) {
+                tmap.put(t.travelerid, COLORS[cidx]);
+                // hopefully we won't wrap around, but we don't want to
+                // AOOBE if we do
+                cidx = (cidx+1) % COLORS.length;
+            }
 	}
 
 	// convert the traveler ids into names
-	int[] userids = new int[tnames.size()];
-	for (int i = 0; i < tnames.size(); i++) {
-	    userids[i] = ((Integer)tnames.get(i)).intValue();
+	int[] userids = new int[tmap.size()];
+        Enumeration tids = tmap.keys();
+        for (int i = 0; tids.hasMoreElements(); i++) {
+	    userids[i] = ((Integer)tids.nextElement()).intValue();
 	}
         UserRepository urep = usermgr.getRepository();
 	String[] names = urep.loadUserNames(userids);
 	ctx.put("names", names);
+
+        // put each traveler's colors into an array so the UI can display
+        // a key
+	String[] colors = new String[names.length];
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = (String)tmap.get(userids[i]);
+        }
+        ctx.put("colors", java.util.Arrays.asList(colors));
 
 	// phase one of the processing invovles figuring out how all of
 	// the trips overlap and how much vertical space each trip will
@@ -102,12 +111,12 @@ public class calendar implements Logic
 	ArrayList markers = new ArrayList();
 	for (int i = 0; i < trips.length; i++) {
 	    Trip t = trips[i];
-	    int tcol = ttable.get(t.travelerid);
 	    // add a marker for the start of the trip
-	    Marker start = new Marker(t, t.begins, tcol, null);
+	    Marker start = new Marker(t, t.begins, -1, null,
+                                      (String)tmap.get(t.travelerid));
 	    markers.add(start);
 	    // and one for the end of the trip (linked to the start)
-	    markers.add(new Marker(null, t.ends, tcol, start));
+	    markers.add(new Marker(null, t.ends, -1, start, null));
 	}
 
 	// now sort the markers
@@ -148,8 +157,11 @@ public class calendar implements Logic
 	    }
 	}
 
-	// insert spacers between trips to make everything layout properly
-	int[] rowpos = new int[ttable.size()];
+	// assign columns and insert spacers between trips to make
+	// everything layout properly
+	int[] rowpos = new int[tmap.size()];
+        int maxcolumn = 0;
+
 	msize = markers.size(); // we'll be adding markers as we go
 	for (int i = 0; i < msize; i++) {
 	    Marker m = (Marker)markers.get(i);
@@ -157,22 +169,45 @@ public class calendar implements Logic
 	    if (m.column == 0) {
 		continue;
 	    }
-	    int tcol = ttable.get(m.trip.travelerid) - 1;
-	    // if this marker is beyond its traveler's current row
+            // figure out what column to use for this trip
+	    int tcol = 0;
+            while (rowpos[tcol] > m.rowstart) {
+                tcol++;
+                // the pathological case is where every single traveler
+                // has a trip on a particular date and at least one of the
+                // travelers has gone and scheduled overlapping trips;
+                // in this case our array needs to be expanded because we
+                // only alotted enough columns for everyone to have an
+                // overlapping trip at the same time
+                if (tcol >= rowpos.length) {
+                    int[] nrpos = new int[rowpos.length*2];
+                    System.arraycopy(rowpos, 0, nrpos, 0, rowpos.length);
+                    rowpos = nrpos;
+                }
+            }
+            // update this marker with the proper position
+            m.column = tcol+1;
+            // make a note if we've forged into the land of a whole new
+            // column
+            if (tcol > maxcolumn) {
+                maxcolumn = tcol;
+            }
+	    // if this marker is more than one slot beyond the current row
 	    // position, we need to insert a spacer
 	    if (rowpos[tcol] < m.rowstart) {
-		markers.add(new Marker(rowpos[tcol], m.rowstart-rowpos[tcol],
-				       tcol+1, null));
+                Marker sp = new Marker(rowpos[tcol], m.rowstart-rowpos[tcol],
+				       tcol+1, null);
+		markers.add(sp);
 	    }
 	    // now move this traveler down to the end of this trip
 	    rowpos[tcol] = m.rowstart+m.rowspan;
 	}
 
 	// add spacers for the very end of the table
-	for (int i = 0; i < rowpos.length; i++) {
+	for (int i = 0; i <= maxcolumn; i++) {
 	    if (rowpos[i] < maxrow) {
 		markers.add(new Marker(rowpos[i], maxrow-rowpos[i],
-				       i+1, null));
+                                       i+1, null));
 	    }
 	}
 
@@ -201,12 +236,16 @@ public class calendar implements Logic
 	public int rowstart = -1;
 	public int rowspan = -1;
 
-	public Marker (Trip trip, Date date, int column, Marker start)
+        public String bgcolor;
+
+	public Marker (Trip trip, Date date, int column, Marker start,
+                       String bgcolor)
 	{
 	    this.trip = trip;
 	    this.date = date;
 	    this.column = column;
 	    this.start = start;
+            this.bgcolor = bgcolor;
 	}
 
 	public Marker (int rowstart, int rowspan, int column, String text)
@@ -215,6 +254,11 @@ public class calendar implements Logic
 	    this.rowspan = rowspan;
 	    this.column = column;
 	    _text = text;
+            if (_text == null) {
+                this.bgcolor = "#CCCCCC";
+            } else {
+                this.bgcolor = "#CCFF99";
+            }
 	}
 
 	public int compareTo (Object other)
@@ -247,17 +291,6 @@ public class calendar implements Logic
 	    return _mdfmt.format(trip.ends);
         }
 
-	public String bgcolor ()
-	{
-	    if (trip != null) {
-		return "#99CC66";
-	    } else if (_text != null) {
-		return "#CCFF99";
-	    } else {
-		return "#CCCCCC";
-	    }
-	}
-
 	public Integer owner ()
 	{
 	    return new Integer((trip != null) ? trip.travelerid : -1);
@@ -267,6 +300,12 @@ public class calendar implements Logic
 	{
 	    return new Integer((trip != null) ? trip.tripid : -1);
 	}
+
+        public String toString ()
+        {
+            return "[date=" + date + ", column=" + column +
+                ", rowstart=" + rowstart + ", rowspan=" + rowspan + "]";
+        }
 
 	protected String _text;
     }
@@ -282,4 +321,12 @@ public class calendar implements Logic
     // mood to write a general purpose routine for this, so we hack...
     protected static String[] ORDINALS =
     { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+
+    // these colors are used to identify travelers in the display. ah the
+    // go2palette lives on!
+    protected static String[] COLORS = {
+        "#6699CC", "#CC6600", "#FFCC33", "#CC6666", "#996699", "#99CC66",
+        "#0066FF", "#FF9900", "#FFFF33", "#FF0033", "#9933FF", "#00CC00",
+        "#99CCFF", "#FFCC66", "#FFFF99", "#FFCCCC", "#CCCCFF", "#CCFF99",
+    };
 }
