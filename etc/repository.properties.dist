@@ -1,0 +1,9 @@
+#
+# $Id$
+#
+# Who, Where, When database configuration
+
+whowhere.driver = org.gjt.mm.mysql.Driver
+whowhere.username = USERNAME
+whowhere.password = PASSWORD
+whowhere.url = jdbc:mysql://DATABASE_HOST:3306/DATABASE_NAME

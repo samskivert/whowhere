@@ -6,13 +6,13 @@ package whowhere.logic;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.samskivert.util.IntMap;
+import com.samskivert.util.HashIntMap;
 import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
 import org.webmacro.servlet.WebContext;
 import org.webmacro.util.Bag;
 
-import whowhere.*;
+import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class calendar implements Logic
@@ -64,7 +64,7 @@ public class calendar implements Logic
 	ctx.put("end", _qfmt.format(startingBefore));
 
 	// load up the trips
-        Repository rep = ((WhoWhere)app).getRepository();
+        TripRepository rep = ((WhoWhere)app).getRepository();
 	Trip[] trips =
             rep.getTrips(user.userid, endingAfter, startingBefore);
 
@@ -77,19 +77,19 @@ public class calendar implements Logic
 	Arrays.sort(trips);
 
 	// figure out which travelers are involved
-        IntMap tmap = new IntMap();
+        HashIntMap tmap = new HashIntMap();
 	for (int i = 0; i < trips.length; i++) {
 	    Trip t = trips[i];
-            if (!tmap.contains(t.travelerid)) {
+            if (!tmap.containsKey(t.travelerid)) {
                 tmap.put(t.travelerid, "");
             }
 	}
 
 	// convert the traveler ids into names
 	int[] userids = new int[tmap.size()];
-        Enumeration tids = tmap.keys();
-        for (int i = 0; tids.hasMoreElements(); i++) {
-	    userids[i] = ((Integer)tids.nextElement()).intValue();
+        Iterator tids = tmap.keys();
+        for (int i = 0; tids.hasNext(); i++) {
+	    userids[i] = ((Integer)tids.next()).intValue();
 	}
 
         // sort the userids to preserve coloration to the extent possible

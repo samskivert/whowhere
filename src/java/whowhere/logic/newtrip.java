@@ -10,7 +10,7 @@ import org.webmacro.servlet.WebContext;
 import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
 
-import whowhere.*;
+import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class newtrip implements Logic
@@ -49,7 +49,7 @@ public class newtrip implements Logic
 	    }
 
 	    // insert the trip into the repository
-            Repository rep = ((WhoWhere)app).getRepository();
+            TripRepository rep = ((WhoWhere)app).getRepository();
 	    rep.insertTrip(trip);
 
 	    // let the user know we updated

@@ -9,7 +9,7 @@ import org.webmacro.servlet.WebContext;
 import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
 
-import whowhere.*;
+import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class edittrip implements Logic
@@ -24,7 +24,7 @@ public class edittrip implements Logic
         // look up the specified trip
 	int tripid = FormUtil.requireIntParameter(
             ctx, "tripid", "edittrip.error.missing_trip_id");
-        Repository rep = ((WhoWhere)app).getRepository();
+        TripRepository rep = ((WhoWhere)app).getRepository();
 	Trip trip = rep.getTrip(tripid);
 	if (trip == null) {
             throw new DataValidationException(

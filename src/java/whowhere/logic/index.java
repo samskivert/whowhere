@@ -11,7 +11,6 @@ import com.samskivert.servlet.RedirectException;
 import com.samskivert.webmacro.*;
 import com.samskivert.util.StringUtil;
 
-import whowhere.Log;
 import whowhere.WhoWhere;
 import whowhere.data.*;
 

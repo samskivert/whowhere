@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.Properties;
 
+import com.samskivert.jdbc.*;
+
 public class RepositoryTest
 {
     public static void main (String[] args)
@@ -18,7 +20,8 @@ public class RepositoryTest
 	    props.put("username", "www");
 	    props.put("password", "Il0ve2PL@Y");
 
-	    Repository rep = new Repository(props);
+            TripRepository rep = new TripRepository(
+                new StaticConnectionProvider(props));
 
 	    // insert a trip into the database
 //  	    Trip itrip = new Trip();
@@ -51,8 +54,6 @@ public class RepositoryTest
 	    for (int i = 0; i < trips.length; i++) {
 		System.out.println(trips[i]);
 	    }
-
-	    rep.shutdown();
 
 	} catch (Exception e) {
 	    e.printStackTrace(System.err);

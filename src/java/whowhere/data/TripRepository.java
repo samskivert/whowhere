@@ -8,40 +8,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.samskivert.jdbc.MySQLRepository;
+import com.samskivert.io.PersistenceException;
+
+import com.samskivert.jdbc.DatabaseLiaison;
+import com.samskivert.jdbc.ConnectionProvider;
+import com.samskivert.jdbc.JORARepository;
 import com.samskivert.jdbc.jora.*;
+
 import com.samskivert.util.*;
 
 /**
  * The repository provides access to the trip database.
  */
-public class Repository extends MySQLRepository
+public class TripRepository extends JORARepository
 {
     /**
-     * Creates the repository and opens the trip database. A properties
-     * object should be supplied with the following fields:
-     *
-     * <pre>
-     * driver=[jdbc driver class]
-     * url=[jdbc driver url]
-     * username=[jdbc username]
-     * password=[jdbc password]
-     * </pre>
-     *
-     * @param props a properties object containing the configuration
-     * parameters for the repository.
+     * The database identifier that the repository will use when fetching
+     * a connection from the connection provider. The value is
+     * <code>whowhere</code> which you'll probably need to know to
+     * properly configure your connection provider.
      */
-    public Repository (Properties props)
-	throws SQLException
+    public static final String DATABASE_IDENT = "whowhere";
+
+    /**
+     * Creates the repository and opens the trip database.
+     *
+     * @param conprov the database connection provider from which to
+     * obtain our database connection.
+     */
+    public TripRepository (ConnectionProvider conprov)
+	throws PersistenceException
     {
-	super(props);
+	super(conprov, DATABASE_IDENT);
     }
 
-    protected void createTables ()
-	throws SQLException
+    protected void createTables (Session session)
     {
 	// create our table objects
-	_ttable = new Table(Trip.class.getName(), "trips", _session,
+	_ttable = new Table(Trip.class.getName(), "trips", session,
 			    "tripid");
     }
 
@@ -50,10 +54,11 @@ public class Repository extends MySQLRepository
      * with that id exists.
      */
     public Trip getTrip (final int tripid)
-	throws SQLException
+	throws PersistenceException
     {
         return (Trip)execute(new Operation () {
-            public Object invoke () throws SQLException
+            public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
             {
                 // look up the trip
                 Cursor ec = _ttable.select("where tripid = " + tripid);
@@ -80,7 +85,7 @@ public class Repository extends MySQLRepository
      */
     public Trip[] getTrips (int travelerid, final Date endingAfter,
                             final Date startingBefore)
-	throws SQLException
+	throws PersistenceException
     {
         // first we have to look up the travelerids of this traveler's
         // circle of friends
@@ -88,7 +93,8 @@ public class Repository extends MySQLRepository
         final String tidstr = StringUtil.toString(tids);
 
         return (Trip[])execute(new Operation () {
-            public Object invoke () throws SQLException
+            public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
             {
                 // now we can look up the trips
                 String query = "where ends >= '" + endingAfter +
@@ -114,7 +120,7 @@ public class Repository extends MySQLRepository
      * specified traveler. An array is always returned, never null.
      */
     public int[] loadCircle (final int travelerid, boolean includeTraveler)
-	throws SQLException
+	throws PersistenceException
     {
         final ArrayList flist = new ArrayList();
 
@@ -125,9 +131,10 @@ public class Repository extends MySQLRepository
 
         // now look up their friends
         execute(new Operation () {
-            public Object invoke () throws SQLException
+            public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
             {
-                Statement stmt = _session.connection.createStatement();
+                Statement stmt = conn.createStatement();
                 try {
                     String query = "select friendid from friends " +
                         "where travelerid = " + travelerid;
@@ -157,13 +164,14 @@ public class Repository extends MySQLRepository
      * travelers into the other's friends circle.
      */
     public void expandCircle (final int tid1, final int tid2)
-        throws SQLException
+        throws PersistenceException
     {
         execute(new Operation () {
-            public Object invoke () throws SQLException
+            public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
             {
                 boolean add1 = true, add2 = true;
-                Statement stmt = _session.connection.createStatement();
+                Statement stmt = conn.createStatement();
 
                 try {
                     // make sure they aren't already in one another's circle
@@ -208,12 +216,13 @@ public class Repository extends MySQLRepository
      * Removes the link between two travelers in the friends table.
      */
     public void excommunicate (final int tid1, final int tid2)
-        throws SQLException
+        throws PersistenceException
     {
         execute(new Operation () {
-            public Object invoke () throws SQLException
+            public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
             {
-                Statement stmt = _session.connection.createStatement();
+                Statement stmt = conn.createStatement();
                 try {
                     // simply remove both rows
                     stmt.executeUpdate("delete from friends where " +
@@ -233,10 +242,11 @@ public class Repository extends MySQLRepository
     }
 
     public Trip[] getTrips (final int travelerid)
-	throws SQLException
+	throws PersistenceException
     {
         return (Trip[])execute(new Operation () {
-            public Object invoke () throws SQLException
+            public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
             {
                 Cursor tc = _ttable.select("where travelerid = " + travelerid);
                 List tlist = tc.toArrayList();
@@ -253,16 +263,17 @@ public class Repository extends MySQLRepository
      * will be filled in by this function.
      */
     public void insertTrip (final Trip trip)
-	throws SQLException
+	throws PersistenceException
     {
 	execute(new Operation () {
-	    public Object invoke () throws SQLException
+	    public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
 	    {
 		// insert the trip into the table
 		_ttable.insert(trip);
 
 		// update the tripid now that it's known
-		trip.tripid = lastInsertedId();
+		trip.tripid = liaison.lastInsertedId(conn);
 
                 // nothing to return
                 return null;
@@ -274,10 +285,11 @@ public class Repository extends MySQLRepository
      * Updates a trip that was previously fetched from the database.
      */
     public void updateTrip (final Trip trip)
-	throws SQLException
+	throws PersistenceException
     {
 	execute(new Operation () {
-	    public Object invoke () throws SQLException
+	    public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
 	    {
 		_ttable.update(trip);
                 // nothing to return
@@ -290,10 +302,11 @@ public class Repository extends MySQLRepository
      * Removes the trip from the database.
      */
     public void deleteTrip (final Trip trip)
-	throws SQLException
+	throws PersistenceException
     {
 	execute(new Operation () {
-	    public Object invoke () throws SQLException
+	    public Object invoke (Connection conn, DatabaseLiaison liaison)
+                throws PersistenceException, SQLException
 	    {
 		_ttable.delete(trip);
                 // nothing to return

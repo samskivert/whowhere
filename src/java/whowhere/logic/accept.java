@@ -11,7 +11,6 @@ import com.samskivert.servlet.util.RequestUtils;
 import com.samskivert.webmacro.*;
 import com.samskivert.util.Crypt;
 
-import whowhere.Log;
 import whowhere.WhoWhere;
 import whowhere.data.*;
 
@@ -62,7 +61,7 @@ public class accept implements Logic
 
             // they've accepted. update the friends table
             if (FormUtil.equals(ctx, "action", "accept")) {
-                Repository rep = ((WhoWhere)app).getRepository();
+                TripRepository rep = ((WhoWhere)app).getRepository();
                 rep.expandCircle(user.userid, friendid);
                 // let the user know that all systems are go
                 errmsg = "accept.message.accepted";

@@ -10,7 +10,6 @@ import com.samskivert.servlet.user.*;
 import com.samskivert.servlet.util.RequestUtils;
 import com.samskivert.webmacro.*;
 
-import whowhere.Log;
 import whowhere.WhoWhere;
 import whowhere.data.*;
 
@@ -21,7 +20,7 @@ public class friends implements Logic
     {
         UserManager usermgr = ((WhoWhere)app).getUserManager();
         UserRepository urep = usermgr.getRepository();
-        Repository rep = ((WhoWhere)app).getRepository();
+        TripRepository rep = ((WhoWhere)app).getRepository();
 
 	User user = usermgr.requireUser(ctx.getRequest());
         String errmsg = null;

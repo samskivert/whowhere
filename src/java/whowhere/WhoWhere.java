@@ -6,9 +6,12 @@ package whowhere;
 import java.util.Properties;
 import javax.servlet.ServletContext;
 
+import com.samskivert.jdbc.ConnectionProvider;
+import com.samskivert.jdbc.StaticConnectionProvider;
+
 import com.samskivert.servlet.user.UserManager;
 import com.samskivert.webmacro.Application;
-import whowhere.data.Repository;
+import whowhere.data.TripRepository;
 
 /**
  * The whowhere class contains references to application-wide resources
@@ -17,10 +20,16 @@ import whowhere.data.Repository;
  */
 public class WhoWhere extends Application
 {
-    /** Returns the database repository in use by the application. */
-    public Repository getRepository ()
+    /** Returns the connection provider in use by this application. */
+    public final ConnectionProvider getConnectionProvider ()
     {
-        return _repository;
+        return _conprov;
+    }
+
+    /** Returns the trip repository in use by the application. */
+    public TripRepository getRepository ()
+    {
+        return _triprep;
     }
 
     /** Returns the user manager in use by the application. */
@@ -32,22 +41,16 @@ public class WhoWhere extends Application
     public void init (ServletContext context)
     {
 	try {
+            // create a static connection provider
+            _conprov = new StaticConnectionProvider(CONN_CONFIG);
+
 	    // initialize the user manager
 	    Properties props = new Properties();
-	    props.put("driver", "org.gjt.mm.mysql.Driver");
-	    props.put("url", "jdbc:mysql://localhost:3306/samskivert");
-	    props.put("username", "www");
-	    props.put("password", "Il0ve2PL@Y");
 	    props.put("login_url", "/usermgmt/login.wm?from=%R");
-	    _usermgr = new UserManager(props);
+	    _usermgr = new UserManager(props, _conprov);
 
 	    // initialize the trip repository
-	    props = new Properties();
-	    props.put("driver", "org.gjt.mm.mysql.Driver");
-	    props.put("url", "jdbc:mysql://localhost:3306/whowhere");
-	    props.put("username", "www");
-	    props.put("password", "Il0ve2PL@Y");
-	    _repository = new Repository(props);
+	    _triprep = new TripRepository(_conprov);
 
 	    Log.info("WhoWhere application initialized.");
 
@@ -59,7 +62,6 @@ public class WhoWhere extends Application
     public void shutdown ()
     {
 	try {
-	    _repository.shutdown();
 	    _usermgr.shutdown();
 	    Log.info("WhoWhere application shutdown.");
 
@@ -74,9 +76,18 @@ public class WhoWhere extends Application
         return MESSAGE_BUNDLE_PATH;
     }
 
-    protected Repository _repository;
+    /** A reference to our connection provider. */
+    protected ConnectionProvider _conprov;
+
+    /** A reference to our user manager. */
     protected UserManager _usermgr;
+
+    /** A reference to our trip repository. */
+    protected TripRepository _triprep;
 
     /** The name of our translation messages file. */
     protected static final String MESSAGE_BUNDLE_PATH = "messages";
+
+    /** The path to our database configuration file. */
+    protected static final String CONN_CONFIG = "repository.properties";
 }
