@@ -41,8 +41,13 @@ public class RepositoryTest
 //  	    Trip[] trips = rep.getTrips(1);
 
 	    // get all trips happening in 2000
-	    Trip[] trips = rep.getTrips(new Date(100, 0, 1),
-					new Date(100, 11, 31));
+	    Calendar cal = Calendar.getInstance();
+	    cal.set(2000, 0, 1);
+	    Date start = new Date(cal.getTime().getTime());
+	    cal.set(2000, 11, 31);
+	    Date end = new Date(cal.getTime().getTime());
+
+	    Trip[] trips = rep.getTrips(start, end);
 	    for (int i = 0; i < trips.length; i++) {
 		System.out.println(trips[i]);
 	    }
