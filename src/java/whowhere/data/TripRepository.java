@@ -4,6 +4,7 @@
 package whowhere.data;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -39,7 +40,7 @@ public class Repository extends MySQLRepository
     protected void createTables ()
 	throws SQLException
     {
-	// create our table object
+	// create our table objects
 	_ttable = new Table(Trip.class.getName(), "trips", _session,
 			    "tripid");
     }
@@ -71,21 +72,106 @@ public class Repository extends MySQLRepository
     /**
      * Fetches trips that intersect the date range provided.
      *
+     * @param travelerid The traveler whose circle of trips are to be
+     * shown.
      * @param endingAfter The beginning of the date range.
      * @param startingBefore The end of the date range.
      */
-    public Trip[] getTrips (Date endingAfter, Date startingBefore)
+    public Trip[] getTrips (int travelerid, Date endingAfter,
+                            Date startingBefore)
 	throws SQLException
     {
         // make sure our session is established
         ensureConnection();
 
+        // first we have to look up the travelerids of this traveler's
+        // circle of friends
+        int[] tids = loadCircle(travelerid);
+        String tidstr = StringUtil.toString(tids);
+
+        // now we can look up the trips
 	Cursor tc = _ttable.select("where ends >= '" + endingAfter +
-				   "' AND begins <= '" + startingBefore + "'");
+				   "' AND begins <= '" + startingBefore +
+                                   "' AND travelerid in " + tidstr);
 	List tlist = tc.toArrayList();
 	Trip[] trips = new Trip[tlist.size()];
 	tlist.toArray(trips);
 	return trips;
+    }
+
+    protected int[] loadCircle (int travelerid)
+	throws SQLException
+    {
+        // make sure our session is established
+        ensureConnection();
+
+        // add the travler themselves to their circle
+        ArrayList flist = new ArrayList();
+        flist.add(new Integer(travelerid));
+
+        // now look up their friends
+	Statement stmt = _session.connection.createStatement();
+        try {
+            String query = "select friendid from friends " +
+                "where travelerid = " + travelerid;
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                flist.add(rs.getObject(1));
+            }
+
+        } finally {
+            stmt.close();
+        }
+
+        // and create an integer array
+        int[] circle = new int[flist.size()];
+        for (int i = 0; i < circle.length; i++) {
+            circle[i] = ((Integer)flist.get(i)).intValue();
+        }
+        return circle;
+    }
+
+    /**
+     * Expands the friends circle of two travelers by placing each of the
+     * travelers into the other's friends circle.
+     */
+    public void expandCircle (int tid1, int tid2)
+        throws SQLException
+    {
+        // make sure our session is established
+        ensureConnection();
+
+        boolean add1 = true, add2 = true;
+	Statement stmt = _session.connection.createStatement();
+
+        try {
+            // make sure they aren't already in one another's circle
+            String query = "select travelerid from friends where " +
+                "(travelerid=" + tid1 + " AND friendid=" + tid2 + ") OR " +
+                "(travelerid=" + tid2 + " AND friendid=" + tid1 + ")";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                if (rs.getInt(1) == tid1) {
+                    add1 = false;
+                }
+                if (rs.getInt(1) == tid2) {
+                    add2 = false;
+                }
+            }
+
+            // now add whichever connections need to be added
+            if (add1) {
+                stmt.executeUpdate("insert into friends values(" + tid1 +
+                                   ", " + tid2 + ")");
+            }
+            if (add2) {
+                stmt.executeUpdate("insert into friends values(" + tid2 +
+                                   ", " + tid1 + ")");
+            }
+
+        } finally {
+            stmt.close();
+        }
     }
 
     public Trip[] getTrips (int travelerid)
@@ -150,4 +236,5 @@ public class Repository extends MySQLRepository
     }
 
     protected Table _ttable;
+    protected Table _ctable;
 }

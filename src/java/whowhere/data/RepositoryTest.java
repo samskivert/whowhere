@@ -47,7 +47,7 @@ public class RepositoryTest
 	    cal.set(2000, 11, 31);
 	    Date end = new Date(cal.getTime().getTime());
 
-	    Trip[] trips = rep.getTrips(start, end);
+	    Trip[] trips = rep.getTrips(0, start, end);
 	    for (int i = 0; i < trips.length; i++) {
 		System.out.println(trips[i]);
 	    }
