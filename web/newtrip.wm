@@ -1,5 +1,5 @@
 #set $title = $Msg.newtrip.title
-#parse "/whowhere/header.wm"
+#parse "/header.wm"
 
 #if (!$noform) {
 #if (!$error) {
@@ -38,4 +38,4 @@
 </table>
 }
 
-#parse "/whowhere/footer.wm"
+#parse "/footer.wm"

@@ -1,8 +1,8 @@
 #set $title = $Msg.edittrip.title
-#parse "/whowhere/header.wm"
+#parse "/header.wm"
 
 <p>
-#if $trip {
+#if ($trip) {
 #escape $trip
 <form action="edittrip.wm">
 <input type="hidden" name="tripid" value="$trip.tripid">
@@ -48,4 +48,4 @@
 </table>
 }
 
-#parse "/whowhere/footer.wm"
+#parse "/footer.wm"
