@@ -23,7 +23,7 @@
   <!-- end sample calendar -->
   </td></table>
 </td></tr>
-<tr><td>$Msg.index.need_account("/usermgmt/login.wm", "/usermgmt/register.wm")</td></tr>
+<tr><td>$Msg.index.need_account("/usermgmt/login.wm?from=/whowhere/", "/usermgmt/register.wm?from=/whowhere/")</td></tr>
 <tr><td>$Msg.index.closing_remarks</td></tr>
 </table>
 
