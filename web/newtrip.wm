@@ -1,14 +1,19 @@
 #set $title = $Msg.newtrip.title
 #parse "/whowhere/header.wm"
 
-<p>
-#if !$noform {
-<form action="newtrip.wm">
-<input type="hidden" name="action" value="create">
+#if (!$noform) {
+#if (!$error) {
+<table cellpadding="6" cellspacing="0" border="0" width="600">
+<tr><td>$Msg.newtrip.howto</td></tr>
+</table>
+}
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="2">
 <b>$Msg.newtrip.create.title</b></td></td>
+
+<form action="newtrip.wm">
+<input type="hidden" name="action" value="create">
 
 <tr><td align="right">$Msg.newtrip.create.destination</td>
 <td><input type="text" name="destination" value="$Form.destination"></td></tr>
@@ -19,9 +24,8 @@
 
 <tr><td colspan="2" align="right" bgcolor="$scolor">
 <input type="submit" name="submit" value="$Msg.newtrip.create.submit"></td></tr>
-</table>
-
 </form>
+</table>
 }
 
 #parse "/whowhere/footer.wm"

@@ -4,6 +4,7 @@
 <td><a href="http://www.waywardgeeks.org/">waywardgeeks.org</a>
 | <a href="calendar.wm">$Msg.footer.calendar_link</a>
 | <a href="newtrip.wm">$Msg.footer.newtrip_link</a>
+| <a href="/usermgmt/account.wm">$Msg.footer.account_link</a>
 </td>
 <td align="right">
 &copy;2001 

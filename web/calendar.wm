@@ -1,6 +1,12 @@
 #set $title = $Msg.calendar.title
 #parse "/whowhere/header.wm"
 
+#if (!$error) {
+<table cellpadding="6" cellspacing="0" border="0" width="600">
+<tr><td>$Msg.calendar.howto("newtrip.wm")</td></tr>
+</table>
+}
+
 #if $markers {
 <table cellpadding="10" cellspacing="4" border="0">
 <tr><th>&nbsp;</th>
