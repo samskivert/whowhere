@@ -15,5 +15,6 @@ CREATE TABLE trips (
 	travelerid  INTEGER(10) NOT NULL,
 	destination VARCHAR(200) NOT NULL,
 	begins      DATE NOT NULL,
-	ends        DATE NOT NULL
+	ends        DATE NOT NULL,
+	description VARCHAR(255) NOT NULL
 );

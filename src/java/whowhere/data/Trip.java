@@ -17,6 +17,8 @@ public class Trip implements Comparable
 
     public Date ends;
 
+    public String description;
+
     public int compareTo (Object other)
     {
 	return begins.compareTo(((Trip)other).begins);
@@ -26,6 +28,6 @@ public class Trip implements Comparable
     {
 	return "[id=" + tripid + ", travelerid=" + travelerid +
 	    ", destination=" + destination + ", begins=" + begins +
-	    ", ends=" + ends + "]";
+	    ", ends=" + ends + ", description=" + description + "]";
     }
 }
