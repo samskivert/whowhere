@@ -31,4 +31,35 @@
 #end
 </table>
 
+<p>
+<table cellpadding="4" cellspacing="0" border="0">
+<tr><td bgcolor="$tcolor">
+<b>$Msg.friends.everyone.title</b></td></tr>
+
+<tr><td>
+If you're the shy type and don't want to run off emailing all your friends
+about this great new tool you've discovered, you might want to scan this
+list to see if any of them are already using the system. If they're a true
+friend, they'll surely gladly accept an invitation from you to join
+circles.
+
+<p>
+<table cellpadding="2" cellspacing="0" border="1">
+<tr>
+#set $iter = 0
+#foreach $name in $allnames
+#if ($iter == 0) { </tr><tr> }
+<td>$name</td>
+#set $iter = $iter + 1
+#if ($iter == 5) { #set $iter = 0 }
+#end
+</tr>
+</table>
+
+<p class="small">
+$Msg.friends.everyone.caveat
+
+</td></tr>
+</table>
+
 #parse "/footer.wm"

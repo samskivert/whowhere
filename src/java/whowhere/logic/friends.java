@@ -48,6 +48,9 @@ public class friends implements Logic
         ctx.put("fids", fids);
         ctx.put("names", java.util.Arrays.asList(names));
 
+        // load up everyone's name and stuff that into the context
+        ctx.put("allnames", urep.loadAllRealNames());
+
         // handle any message that was generated
         if (errmsg != null) {
             ctx.put("error", app.translate(ctx, errmsg));
