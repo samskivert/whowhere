@@ -3,7 +3,7 @@
 
 #if (!$noform) {
 #if (!$error) {
-<table cellpadding="6" cellspacing="0" border="0" width="600">
+<table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr><td>$Msg.newtrip.howto</td></tr>
 </table>
 }

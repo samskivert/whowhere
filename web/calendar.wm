@@ -2,7 +2,7 @@
 #parse "/header.wm"
 
 #if (!$error)
-  <table cellpadding="6" cellspacing="0" border="0" width="600">
+  <table cellpadding="6" cellspacing="0" border="0" width="100%">
   <tr><td>$Msg.calendar.howto("friends.wm", "newtrip.wm")</td></tr>
   </table>
 #end
@@ -11,7 +11,7 @@
 <tr><td>
 <table cellpadding="6" cellspacing="2" border="0">
 #if (!$markers)
-  <tr><td width="600" valign="top" bgcolor="$tcolor">
+  <tr><td width="100%" valign="top" bgcolor="$tcolor">
     $Msg.calendar.no_trips("newtrip.wm")
   </td>
 #else

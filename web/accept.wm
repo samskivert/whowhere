@@ -3,7 +3,7 @@
 
 #if (!$error)
 #if ($need_account)
-<table cellpadding="6" cellspacing="0" border="0" width="600">
+<table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr><td>$Msg.accept.banner($inviter)
 <p>$Msg.accept.explain</td></tr>
 <tr><td>
@@ -30,7 +30,7 @@
 <tr><td>$Msg.accept.closing_remarks</td></tr>
 </table>
 #else
-<table cellpadding="6" cellspacing="0" border="0" width="600">
+<table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr><td>$Msg.accept.invitation($inviter)</td></tr>
 </table>
 

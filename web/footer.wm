@@ -1,5 +1,5 @@
 <p>
-<table cellpadding=6 cellspacing=0 border=0 width="600">
+<table cellpadding=6 cellspacing=0 border=0 width="100%">
 <tr bgcolor="$hcolor">
 <td><a href="calendar.wm">$Msg.footer.calendar_link</a>
 | <a href="newtrip.wm">$Msg.footer.newtrip_link</a>

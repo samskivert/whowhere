@@ -2,7 +2,7 @@
 #parse "/header.wm"
 
 #if (!$error)
-  <table cellpadding="6" cellspacing="0" border="0" width="600">
+  <table cellpadding="6" cellspacing="0" border="0" width="100%">
   <tr><td>$Msg.friends.howto("addfriend.wm")</td></tr>
   </table>
 #end
