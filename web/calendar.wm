@@ -44,6 +44,8 @@
   #set $i = 0
   #foreach $name in $names
     <tr><td bgcolor="$colors.get($i)">$name</td>
+    ## this will freak out if $i becomes larger than $colors.size(), but
+    ## we don't seem to have modulo, so I'm punting
     #set $i = $i + 1
   #end
   </tr>

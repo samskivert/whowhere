@@ -74,16 +74,12 @@ public class calendar implements Logic
 	// sort our trips by start date
 	Arrays.sort(trips);
 
-	// figure out which travelers are involved and assign colors
+	// figure out which travelers are involved
         IntMap tmap = new IntMap();
-        int cidx = 0;
 	for (int i = 0; i < trips.length; i++) {
 	    Trip t = trips[i];
             if (!tmap.contains(t.travelerid)) {
-                tmap.put(t.travelerid, COLORS[cidx]);
-                // hopefully we won't wrap around, but we don't want to
-                // AOOBE if we do
-                cidx = (cidx+1) % COLORS.length;
+                tmap.put(t.travelerid, "");
             }
 	}
 
@@ -93,17 +89,19 @@ public class calendar implements Logic
         for (int i = 0; tids.hasMoreElements(); i++) {
 	    userids[i] = ((Integer)tids.nextElement()).intValue();
 	}
+
+        // sort the userids to preserve coloration to the extent possible
+        Arrays.sort(userids);
         UserRepository urep = usermgr.getRepository();
 	String[] names = urep.loadUserNames(userids);
 	ctx.put("names", names);
 
-        // put each traveler's colors into an array so the UI can display
-        // a key
-	String[] colors = new String[names.length];
-        for (int i = 0; i < colors.length; i++) {
-            colors[i] = (String)tmap.get(userids[i]);
+        // now that we have the travelers all nicely sorted, we can assign
+        // the colors and put the color array into the context
+        for (int i = 0; i < userids.length; i++) {
+            tmap.put(userids[i], COLORS[i % COLORS.length]);
         }
-        ctx.put("colors", java.util.Arrays.asList(colors));
+        ctx.put("colors", java.util.Arrays.asList(COLORS));
 
 	// phase one of the processing invovles figuring out how all of
 	// the trips overlap and how much vertical space each trip will
