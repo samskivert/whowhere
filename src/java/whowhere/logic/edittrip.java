@@ -33,7 +33,7 @@ public class edittrip implements Logic
 	}
 
 	// make sure this user owns this trip
-	if (user.userid != trip.travelerid) {
+	if (user.userId != trip.travelerid) {
             throw new DataValidationException(
                 "edittrip.error.not_owner_of_trip");
 	}

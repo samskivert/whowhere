@@ -56,7 +56,7 @@ public class accept implements Logic
 
         } else {
             // make sure things are sane
-            if (user.userid == friendid) {
+            if (user.userId == friendid) {
                 throw new FriendlyException("accept.error.cant_invite_self");
             }
 
@@ -64,7 +64,7 @@ public class accept implements Logic
             if (ParameterUtil.parameterEquals(
                 ctx.getRequest(), "action", "accept")) {
                 TripRepository rep = ((WhoWhere)app).getRepository();
-                rep.expandCircle(user.userid, friendid);
+                rep.expandCircle(user.userId, friendid);
                 // let the user know that all systems are go
                 errmsg = "accept.message.accepted";
             }

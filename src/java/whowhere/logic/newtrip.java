@@ -30,7 +30,7 @@ public class newtrip implements Logic
 	    Trip trip = new Trip();
 
 	    // set the travelerid from the userid of the calling user
-	    trip.travelerid = user.userid;
+	    trip.travelerid = user.userId;
 
 	    // parse our fields
 	    trip.destination = ParameterUtil.requireParameter(

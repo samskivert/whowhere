@@ -29,7 +29,7 @@ public class friends implements Logic
             ctx.getRequest(), "action", "delete")) {
             int friendid = ParameterUtil.requireIntParameter(
                 ctx.getRequest(), "who", "friends.error.missing_friendid");
-            rep.excommunicate(user.userid, friendid);
+            rep.excommunicate(user.userId, friendid);
 
             // let them know that we've done the deed
             User friend = urep.loadUser(friendid);
@@ -39,7 +39,7 @@ public class friends implements Logic
 	}
 
         // now load up their circle of friends
-        int[] fids = rep.loadCircle(user.userid, false);
+        int[] fids = rep.loadCircle(user.userId, false);
         String[] names = urep.loadRealNames(fids);
 
         // make the names and ids available to the page

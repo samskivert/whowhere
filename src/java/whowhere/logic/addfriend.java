@@ -115,7 +115,7 @@ public class addfriend implements Logic
         String uri = StringUtil.replace(req.getRequestURI(),
                                         "addfriend.wm", "accept.wm");
         url.append(uri);
-        url.append("?who=").append(user.userid);
+        url.append("?who=").append(user.userId);
         // generate an encryption of a random number and the requesting
         // user's password so that people can't spoof invitations from
         // someone that didn't invite them

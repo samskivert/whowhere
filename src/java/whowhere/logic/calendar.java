@@ -26,7 +26,7 @@ public class calendar implements Logic
 
 	// put our userid into the context for the display to muck with
 	if (user != null) {
-	    ctx.put("userid", new Integer(user.userid));
+	    ctx.put("userid", new Integer(user.userId));
 	} else {
 	    ctx.put("userid", new Integer(-1));
 	}
@@ -65,7 +65,7 @@ public class calendar implements Logic
 	// load up the trips
         TripRepository rep = ((WhoWhere)app).getRepository();
 	Trip[] trips =
-            rep.getTrips(user.userid, endingAfter, startingBefore);
+            rep.getTrips(user.userId, endingAfter, startingBefore);
 
 	// bail out now if we've got no trips
 	if (trips == null) {
@@ -85,24 +85,24 @@ public class calendar implements Logic
 	}
 
 	// convert the traveler ids into names
-	int[] userids = new int[tmap.size()];
+	int[] userIds = new int[tmap.size()];
         Iterator tids = tmap.keys();
         for (int i = 0; tids.hasNext(); i++) {
-	    userids[i] = ((Integer)tids.next()).intValue();
+	    userIds[i] = ((Integer)tids.next()).intValue();
 	}
 
         // sort the userids to preserve coloration to the extent possible
-        Arrays.sort(userids);
+        Arrays.sort(userIds);
         UserRepository urep = usermgr.getRepository();
-	String[] names = urep.loadUserNames(userids);
+	String[] names = urep.loadUserNames(userIds);
         if (names.length > 0) {
             ctx.put("names", names);
         }
 
         // now that we have the travelers all nicely sorted, we can assign
         // the colors and put the color array into the context
-        for (int i = 0; i < userids.length; i++) {
-            tmap.put(userids[i], COLORS[i % COLORS.length]);
+        for (int i = 0; i < userIds.length; i++) {
+            tmap.put(userIds[i], COLORS[i % COLORS.length]);
         }
         ctx.put("colors", java.util.Arrays.asList(COLORS));
 
