@@ -3,6 +3,16 @@
 #
 # Who, Where, When database configuration
 
+sitedb.driver = org.gjt.mm.mysql.Driver
+sitedb.username = USERNAME
+sitedb.password = PASSWORD
+sitedb.url = jdbc:mysql://DATABASE_HOST:3306/DATABASE_NAME
+
+userdb.driver = org.gjt.mm.mysql.Driver
+userdb.username = USERNAME
+userdb.password = PASSWORD
+userdb.url = jdbc:mysql://DATABASE_HOST:3306/DATABASE_NAME
+
 whowhere.driver = org.gjt.mm.mysql.Driver
 whowhere.username = USERNAME
 whowhere.password = PASSWORD
