@@ -1,5 +1,5 @@
 #set ($title = $i18n.edittrip.title)
-#parse ("/header.wm")
+#import ("/header.wm")
 
 <p>
 #if ($trip)
@@ -47,4 +47,4 @@ $form.submit("submit", $i18n.edittrip.delete.submit)</td></tr>
 </table>
 #end
 
-#parse ("/footer.wm")
+#import ("/footer.wm")

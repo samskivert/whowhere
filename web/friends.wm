@@ -1,5 +1,5 @@
 #set ($title = $i18n.friends.title)
-#parse ("/header.wm")
+#import ("/header.wm")
 
 #if (!$error)
   <table cellpadding="6" cellspacing="0" border="0" width="100%">
@@ -48,4 +48,4 @@ $i18n.friends.everyone.caveat
 </td></tr>
 </table>
 
-#parse ("/footer.wm")
+#import ("/footer.wm")

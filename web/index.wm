@@ -1,5 +1,5 @@
 #set ($title = $i18n.index.title)
-#parse ("/header.wm")
+#import ("/header.wm")
 
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr><td>$i18n.index.explain</td></tr>
@@ -27,4 +27,4 @@
 <tr><td>$i18n.index.closing_remarks</td></tr>
 </table>
 
-#parse ("/footer.wm")
+#import ("/footer.wm")

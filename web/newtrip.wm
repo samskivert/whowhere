@@ -1,5 +1,5 @@
 #set ($title = $i18n.newtrip.title)
-#parse ("/header.wm")
+#import ("/header.wm")
 
 #if (!$noform)
 #if (!$error)
@@ -38,4 +38,4 @@ $form.submit("submit", $i18n.newtrip.create.submit)</td></tr>
 </table>
 #end
 
-#parse ("/footer.wm")
+#import ("/footer.wm")

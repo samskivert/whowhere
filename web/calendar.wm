@@ -1,5 +1,5 @@
 #set ($title = $i18n.calendar.title)
-#parse ("/header.wm")
+#import ("/header.wm")
 
 #if (!$error)
   <table cellpadding="6" cellspacing="0" border="0" width="100%">
@@ -64,4 +64,4 @@
 </table>
 </form>
 
-#parse ("/footer.wm")
+#import ("/footer.wm")

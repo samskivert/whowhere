@@ -1,5 +1,5 @@
 #set ($title = $i18n.accept.title)
-#parse ("/header.wm")
+#import ("/header.wm")
 
 #if (!$error)
 #if ($need_account)
@@ -52,4 +52,4 @@ $form.submit("submit", $i18n.accept.accept.submit)</td></tr>
 #end
 #end
 
-#parse ("/footer.wm")
+#import ("/footer.wm")

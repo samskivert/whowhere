@@ -6,11 +6,16 @@ package whowhere;
 import java.util.Properties;
 import javax.servlet.ServletContext;
 
+import com.samskivert.io.PersistenceException;
 import com.samskivert.jdbc.ConnectionProvider;
 import com.samskivert.jdbc.StaticConnectionProvider;
 
+import com.samskivert.servlet.JDBCTableSiteIdentifier;
+import com.samskivert.servlet.SiteIdentifier;
 import com.samskivert.servlet.user.UserManager;
+import com.samskivert.util.ServiceUnavailableException;
 import com.samskivert.velocity.Application;
+
 import whowhere.data.TripRepository;
 
 /**
@@ -38,8 +43,10 @@ public class WhoWhere extends Application
         return _usermgr;
     }
 
-    public void init (ServletContext context)
+    protected void willInit ()
     {
+        super.willInit();
+
 	try {
             // create a static connection provider
             _conprov = new StaticConnectionProvider(CONN_CONFIG);
@@ -74,6 +81,17 @@ public class WhoWhere extends Application
     public String getMessageBundlePath ()
     {
         return MESSAGE_BUNDLE_PATH;
+    }
+
+    /** We want a special site identifier. */
+    protected SiteIdentifier createSiteIdentifier (ServletContext ctx)
+    {
+        try {
+            return new JDBCTableSiteIdentifier(_conprov);
+        } catch (PersistenceException pe) {
+            throw new ServiceUnavailableException(
+                "Can't access site database.", pe);
+        }
     }
 
     /** A reference to our connection provider. */
