@@ -204,12 +204,14 @@ public class calendar implements Logic
 	}
 
 	// add spacers for the very end of the table
-	for (int i = 0; i <= maxcolumn; i++) {
-	    if (rowpos[i] < maxrow) {
-		markers.add(new Marker(rowpos[i], maxrow-rowpos[i],
-                                       i+1, null));
-	    }
-	}
+        if (maxcolumn > 0) {
+            for (int i = 0; i <= maxcolumn; i++) {
+                if (rowpos[i] < maxrow) {
+                    markers.add(new Marker(rowpos[i], maxrow-rowpos[i],
+                                           i+1, null));
+                }
+            }
+        }
 
 	// sort the whole dang thing again
 	Collections.sort(markers);
