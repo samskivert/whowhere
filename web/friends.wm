@@ -1,10 +1,16 @@
 #set $title = $Msg.friends.title
 #parse "/header.wm"
 
-<p>
+#if (!$error)
+  <table cellpadding="6" cellspacing="0" border="0" width="600">
+  <tr><td>$Msg.friends.howto("addfriend.wm")</td></tr>
+  </table>
+#end
+
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="2">
 <b>$Msg.friends.friends.title</b></td></td>
+#if ($fids.length > 0)
 
 ## this is an annoying webmacro hack. i wish it were easier to iterate
 ## over two arrays at once
@@ -18,6 +24,10 @@
      value="$Msg.friends.friends.submit"></td></tr>
 </form>
 #set $iter = $iter + 1
+#end
+
+#else
+<tr><td colspan="2">$Msg.friends.no_friends("addfriend.wm")</td></tr>
 #end
 </table>
 
