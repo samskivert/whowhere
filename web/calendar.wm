@@ -8,14 +8,16 @@
 #end
 
 <table cellpadding="0" cellspacing="0" border="0">
+<tr><td>
+<table cellpadding="6" cellspacing="2" border="0">
 #if (!$markers)
-  <tr><td valign="top" bgcolor="$tcolor">$Msg.calendar.no_trips</td>
+  <tr><td width="600" valign="top" bgcolor="$tcolor">
+    $Msg.calendar.no_trips("newtrip.wm")
+  </td>
 #else
-  <tr><td>
-  <table cellpadding="6" cellspacing="2" border="0">
   #foreach $marker in $markers
     #if ($marker.column == 0)
-      <tr>
+    <tr>
     #end
     <td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor">
     #if ($marker.trip)
@@ -37,7 +39,7 @@
   </table>
   </td>
 #end
-#if ($names)
+#if ($names.length > 0)
   <td valign="top">
   <table cellpadding="4" cellspacing="2" border="0">
   <tr><td><b>Key</b></td>
