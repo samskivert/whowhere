@@ -1,0 +1,19 @@
+/**
+ * $Id$
+ *
+ * Creates the necessary database tables in MySQL for the who where
+ * repository.
+ */
+
+/**
+ * The trips table contains a row for every entry (traveler, destination,
+ * start and end dates).
+ */
+DROP TABLE IF EXISTS trips;
+CREATE TABLE trips (
+	tripid      INTEGER(10) PRIMARY KEY AUTO_INCREMENT,
+	travelerid  INTEGER(10) NOT NULL,
+	destination VARCHAR(200) NOT NULL,
+	begins      DATE NOT NULL,
+	ends        DATE NOT NULL
+);
