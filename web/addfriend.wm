@@ -1,35 +1,35 @@
-#set ($title = $i18n.addfriend.title)
+#set ($title = $i18n.xlate("addfriend.title"))
 #import ("/header.wm")
 
 #if (!$noform)
 #if (!$error)
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
-<tr><td>$i18n.addfriend.howto</td></tr>
+<tr><td>$i18n.xlate("addfriend.howto")</td></tr>
 </table>
 #end
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$i18n.addfriend.create.title</b></td></td>
+<b>$i18n.xlate("addfriend.create.title")</b></td></td>
 
 <form action="addfriend.wm">
 $form.fixedHidden("action", "request")
 
-<tr><td align="right">$i18n.addfriend.create.address</td>
+<tr><td align="right">$i18n.xlate("addfriend.create.address")</td>
 <td colspan="3">$form.text("address", "size='20'")</td></tr>
 
-<tr><td align="right">$i18n.addfriend.create.subject</td>
+<tr><td align="right">$i18n.xlate("addfriend.create.subject")</td>
 <td colspan="3">
-$form.text("subject", "size='40'", $i18n.addfriend.create.default_subject)
+$form.text("subject", "size='40'", $i18n.xlate("addfriend.create.default_subject"))
 </td></tr>
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-$form.submit("submit", $i18n.addfriend.create.submit)</td></tr>
+$form.submit("submit", $i18n.xlate("addfriend.create.submit"))</td></tr>
 </form>
 </table>
 
 #if ($email)
-<p> $i18n.addfriend.example_header
+<p> $i18n.xlate("addfriend.example_header")
 <pre>
 $email
 </pre>

@@ -1,8 +1,8 @@
-#set ($title = $i18n.index.title)
+#set ($title = $i18n.xlate("index.title"))
 #import ("/header.wm")
 
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
-<tr><td>$i18n.index.explain</td></tr>
+<tr><td>$i18n.xlate("index.explain")</td></tr>
 <tr><td>
 <table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
@@ -23,8 +23,8 @@
   <!-- end sample calendar -->
   </td></table>
 </td></tr>
-<tr><td>$i18n.index.need_account("/usermgmt/login.wm?from=/whowhere/", "/usermgmt/register.wm?from=/whowhere/")</td></tr>
-<tr><td>$i18n.index.closing_remarks</td></tr>
+<tr><td>$i18n.xlate("index.need_account", "/usermgmt/login.wm?from=/whowhere/", "/usermgmt/register.wm?from=/whowhere/")</td></tr>
+<tr><td>$i18n.xlate("index.closing_remarks")</td></tr>
 </table>
 
 #import ("/footer.wm")

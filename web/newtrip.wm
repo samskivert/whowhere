@@ -1,39 +1,39 @@
-#set ($title = $i18n.newtrip.title)
+#set ($title = $i18n.xlate("newtrip.title"))
 #import ("/header.wm")
 
 #if (!$noform)
 #if (!$error)
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
-<tr><td>$i18n.newtrip.howto</td></tr>
+<tr><td>$i18n.xlate("newtrip.howto")</td></tr>
 </table>
 #end
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$i18n.newtrip.create.title</b></td></td>
+<b>$i18n.xlate("newtrip.create.title")</b></td></td>
 
 <form action="newtrip.wm">
 $form.fixedHidden("action", "create")
 
-<tr><td align="right">$i18n.newtrip.create.destination</td>
+<tr><td align="right">$i18n.xlate("newtrip.create.destination")</td>
 <td colspan="3">
 $form.text("destination", "size='40'")
 </td></tr>
-<tr><td align="right">$i18n.newtrip.create.begins</td>
+<tr><td align="right">$i18n.xlate("newtrip.create.begins")</td>
 <td><font face="courier">
-$form.text("begins", "size='10'", $i18n.newtrip.message.default_begins)
+$form.text("begins", "size='10'", $i18n.xlate("newtrip.message.default_begins"))
 </font></td>
-<td align="right">$i18n.newtrip.create.ends</td>
+<td align="right">$i18n.xlate("newtrip.create.ends")</td>
 <td><font face="courier">
-$form.text("ends", "size='10'", $i18n.newtrip.message.default_ends)
+$form.text("ends", "size='10'", $i18n.xlate("newtrip.message.default_ends"))
 </font></td></tr>
-<tr><td align="right">$i18n.newtrip.create.description</td>
+<tr><td align="right">$i18n.xlate("newtrip.create.description")</td>
 <td colspan="3">
 $form.text("description", "size='40'")<br>
-<div class="small">$i18n.newtrip.create.descrip_howto</div></td></tr>
+<div class="small">$i18n.xlate("newtrip.create.descrip_howto")</div></td></tr>
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-$form.submit("submit", $i18n.newtrip.create.submit)</td></tr>
+$form.submit("submit", $i18n.xlate("newtrip.create.submit"))</td></tr>
 </form>
 </table>
 #end

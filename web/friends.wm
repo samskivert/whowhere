@@ -1,36 +1,36 @@
-#set ($title = $i18n.friends.title)
+#set ($title = $i18n.xlate("friends.title"))
 #import ("/header.wm")
 
 #if (!$error)
   <table cellpadding="6" cellspacing="0" border="0" width="100%">
-  <tr><td>$i18n.friends.howto("addfriend.wm")</td></tr>
+  <tr><td>$i18n.xlate("friends.howto", "addfriend.wm")</td></tr>
   </table>
 #end
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="2">
-<b>$i18n.friends.friends.title</b></td></td>
+<b>$i18n.xlate("friends.friends.title")</b></td></td>
 #if ($names.size() > 0)
 #foreach ($fid in $fids)
 <form action="friends.wm">
 $form.fixedHidden("action", "delete")
 $form.fixedHidden("who", "$fid")
 <tr><td>$names.get($vidx)</td>
-<td>$form.submit("submit", $i18n.friends.friends.submit)</td></tr>
+<td>$form.submit("submit", $i18n.xlate("friends.friends.submit"))</td></tr>
 </form>
 #end
 #else
-<tr><td colspan="2">$i18n.friends.no_friends("addfriend.wm")</td></tr>
+<tr><td colspan="2">$i18n.xlate("friends.no_friends", "addfriend.wm")</td></tr>
 #end
 </table>
 
 <p>
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor">
-<b>$i18n.friends.everyone.title</b></td></tr>
+<b>$i18n.xlate("friends.everyone.title")</b></td></tr>
 
 <tr><td>
-$i18n.friends.everyone.explain("addfriend.wm")
+$i18n.xlate("friends.everyone.explain", "addfriend.wm")
 
 <p>
 <table cellpadding="2" cellspacing="0" border="1">
@@ -43,7 +43,7 @@ $i18n.friends.everyone.explain("addfriend.wm")
 </table>
 
 <p class="small">
-$i18n.friends.everyone.caveat
+$i18n.xlate("friends.everyone.caveat")
 
 </td></tr>
 </table>

@@ -1,11 +1,11 @@
-#set ($title = $i18n.accept.title)
+#set ($title = $i18n.xlate("accept.title"))
 #import ("/header.wm")
 
 #if (!$error)
 #if ($need_account)
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
-<tr><td>$i18n.accept.banner($inviter)
-<p>$i18n.index.explain</td></tr>
+<tr><td>$i18n.xlate("accept.banner", $inviter)
+<p>$i18n.xlate("index.explain")</td></tr>
 <tr><td>
 <table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
@@ -26,18 +26,18 @@
   <!-- end sample calendar -->
   </td></table>
 </td></tr>
-<tr><td>$i18n.index.need_account("/usermgmt/login.wm?from=$from", "/usermgmt/register.wm?from=$from")</td></tr>
-<tr><td>$i18n.index.closing_remarks</td></tr>
+<tr><td>$i18n.xlate("index.need_account", "/usermgmt/login.wm?from=$from", "/usermgmt/register.wm?from=$from")</td></tr>
+<tr><td>$i18n.xlate("index.closing_remarks")</td></tr>
 </table>
 #else
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
-<tr><td>$i18n.accept.invitation($inviter)</td></tr>
+<tr><td>$i18n.xlate("accept.invitation", $inviter)</td></tr>
 </table>
 
 <p>
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$i18n.accept.accept.title</b></td></td>
+<b>$i18n.xlate("accept.accept.title")</b></td></td>
 
 <form action="accept.wm">
 $form.fixedHidden("action", "accept")
@@ -46,7 +46,7 @@ $form.hidden("when")
 $form.hidden("how")
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-$form.submit("submit", $i18n.accept.accept.submit)</td></tr>
+$form.submit("submit", $i18n.xlate("accept.accept.submit"))</td></tr>
 </form>
 </table>
 #end

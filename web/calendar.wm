@@ -1,18 +1,18 @@
-#set ($title = $i18n.calendar.title)
+#set ($title = $i18n.xlate("calendar.title"))
 #import ("/header.wm")
 
 #if (!$error)
   <table cellpadding="6" cellspacing="0" border="0" width="100%">
-  <tr><td>$i18n.calendar.howto("friends.wm", "newtrip.wm")</td></tr>
+  <tr><td>$i18n.xlate("calendar.howto", "friends.wm", "newtrip.wm")</td></tr>
   </table>
 #end
 
-<table cellpadding="0" cellspacing="0" border="0">
+<p><table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
-<table cellpadding="6" cellspacing="2" border="0">
+<table style="border-collapse: separate" cellpadding="6" cellspacing="2" border="0">
 #if (!$markers)
   <tr><td width="100%" valign="top" bgcolor="$tcolor">
-    $i18n.calendar.no_trips("newtrip.wm")
+    $i18n.xlate("calendar.no_trips", "newtrip.wm")
   </td>
 #else
   #foreach ($marker in $markers)
@@ -23,7 +23,7 @@
     #if ($marker.trip)
       <b>$marker.trip.destination</b><br>
       <div class="small">
-      $i18n.calendar.duration($marker.begins(), $marker.ends())
+      $i18n.xlate("calendar.duration", $marker.begins(), $marker.ends())
       #if ($marker.trip.description)
         <br>$marker.trip.description
       #end
@@ -40,8 +40,9 @@
   </td>
 #end
 #if ($names)
+  <td>&nbsp;</td>
   <td valign="top">
-  <table cellpadding="4" cellspacing="2" border="0">
+  <table style="border-collapse: separate" cellpadding="4" cellspacing="2" border="0">
   <tr><td><b>Key</b></td>
   #foreach ($name in $names)
     ## this will freak out if $vidx becomes larger than $colors.size(),
@@ -55,12 +56,12 @@
 </table>
 
 <form action="calendar.wm">
-<table>
-<tr><td>$i18n.calendar.viewing_trips</td>
+<p><table>
+<tr><td>$i18n.xlate("calendar.viewing_trips")</td>
 <td>$form.text("begin", "", $begin)</td>
-<td>$i18n.calendar.to</td>
+<td>$i18n.xlate("calendar.to")</td>
 <td>$form.text("end", "", $end)</td>
-<td>$form.submit("submit", $i18n.calendar.query)</td></tr>
+<td>$form.submit("submit", $i18n.xlate("calendar.query"))</td></tr>
 </table>
 </form>
 

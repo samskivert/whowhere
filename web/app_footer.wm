@@ -1,5 +1,5 @@
 Who, Where, When:
-<a href="calendar.wm">$i18n.app_footer.calendar_link</a>
-| <a href="newtrip.wm">$i18n.app_footer.newtrip_link</a>
-| <a href="friends.wm">$i18n.app_footer.friends_link</a>
-| <a href="addfriend.wm">$i18n.app_footer.addfriend_link</a>
+<a href="calendar.wm">$i18n.xlate("app_footer.calendar_link")</a>
+| <a href="newtrip.wm">$i18n.xlate("app_footer.newtrip_link")</a>
+| <a href="friends.wm">$i18n.xlate("app_footer.friends_link")</a>
+| <a href="addfriend.wm">$i18n.xlate("app_footer.addfriend_link")</a>

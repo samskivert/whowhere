@@ -1,4 +1,4 @@
-#set ($title = $i18n.edittrip.title)
+#set ($title = $i18n.xlate("edittrip.title"))
 #import ("/header.wm")
 
 <p>
@@ -9,39 +9,39 @@ $form.fixedHidden("action", "update")
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$i18n.edittrip.edit.title</b></td></td>
+<b>$i18n.xlate("edittrip.edit.title")</b></td></td>
 
-<tr><td align="right">$i18n.edittrip.edit.destination</td>
+<tr><td align="right">$i18n.xlate("edittrip.edit.destination")</td>
 <td colspan="3">
 $form.text("destination", "size='40'", $trip.destination)
 </td></tr>
-<tr><td align="right">$i18n.edittrip.edit.begins</td>
+<tr><td align="right">$i18n.xlate("edittrip.edit.begins")</td>
 <td><font face="courier">
 $form.text("begins", "size='10'", $trip.begins)
 </font></td>
-<td align="right">$i18n.edittrip.edit.ends</td>
+<td align="right">$i18n.xlate("edittrip.edit.ends")</td>
 <td><font face="courier">
 $form.text("ends", "size='10'", $trip.ends)
 </font></td></tr>
-<tr><td align="right">$i18n.edittrip.edit.description</td>
+<tr><td align="right">$i18n.xlate("edittrip.edit.description")</td>
 <td colspan="3">
 $form.text("description", "size='40'", $trip.description)
 </td></tr>
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-$form.submit("submit", $i18n.edittrip.edit.submit)</td></tr>
+$form.submit("submit", $i18n.xlate("edittrip.edit.submit"))</td></tr>
 </form>
 
 <tr><td colspan="4">&nbsp;</td></td>
 
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$i18n.edittrip.delete.title</b></td></td>
+<b>$i18n.xlate("edittrip.delete.title")</b></td></td>
 
 <form action="edittrip.wm">
 $form.fixedHidden("tripid", "$trip.tripid")
 $form.fixedHidden("action", "delete")
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-$form.submit("submit", $i18n.edittrip.delete.submit)</td></tr>
+$form.submit("submit", $i18n.xlate("edittrip.delete.submit"))</td></tr>
 </form>
 
 </table>
