@@ -36,8 +36,8 @@ public class friends implements Logic
             // let them know that we've done the deed
             User friend = urep.loadUser(friendid);
             String fname = (friend != null) ? friend.realname : "<?>";
-            errmsg = app.translate(
-                ctx, "friends.message.excommunicated", fname);
+            ctx.put("error", app.translate(
+                ctx, "friends.message.excommunicated", fname));
 	}
 
         // now load up their circle of friends
