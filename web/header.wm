@@ -19,8 +19,8 @@ $title
 </td>
 </table>
 
-#if ($error) {
-<table>
-<tr><td><font color="#FF0000">$error</font></td></tr>
-</table>
-}
+#if ($error)
+  <table>
+  <tr><td><font color="#FF0000">$error</font></td></tr>
+  </table>
+#end

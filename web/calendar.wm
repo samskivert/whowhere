@@ -2,49 +2,53 @@
 #parse "/header.wm"
 
 #if (!$error)
-<table cellpadding="6" cellspacing="0" border="0" width="600">
-<tr><td>$Msg.calendar.howto("newtrip.wm")</td></tr>
-</table>
+  <table cellpadding="6" cellspacing="0" border="0" width="600">
+  <tr><td>$Msg.calendar.howto("newtrip.wm")</td></tr>
+  </table>
 #end
 
-#if ($markers)
-<table cellpadding="5" cellspacing="4" border="0">
-<tr><td><b>Key</b></td>
-#set $i = 0
-#foreach $name in $names
-<td bgcolor="$colors.get($i)">$name</td>
-#set $i = $i + 1
-#end
-</tr>
-</table>
+<table cellpadding="0" cellspacing="0" border="0">
+#if (!$markers)
+  <tr><td valign="top" bgcolor="$tcolor">$Msg.calendar.no_trips</td>
 #else
-<table cellpadding="10" cellspacing="4" border="0">
-<tr><td valign="top" bgcolor="$tcolor">
-$Msg.calendar.no_trips
-</td></tr>
-</table>
+  <tr><td>
+  <table cellpadding="6" cellspacing="2" border="0">
+  #foreach $marker in $markers
+    #if ($marker.column == 0)
+      <tr>
+    #end
+    <td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor">
+    #if ($marker.trip)
+      <b>$marker.trip.destination</b><br>
+      <div class="small">
+      $Msg.calendar.duration($marker.begins(), $marker.ends())
+      #if ($marker.trip.description)
+        <br>$marker.trip.description
+      #end
+      </div>
+    #else
+      $marker.text()
+    #end
+    #if (($userid != -1) && ($userid == $marker.owner()))
+      <br><a href="edittrip.wm?tripid=$marker.tripid()">[edit]</a>
+    #end
+    </td>
+  #end
+  </table>
+  </td>
 #end
-
-<table cellpadding="10" cellspacing="4" border="0">
-#foreach $marker in $markers
-#if ($marker.column == 0)
-<tr>
-#end
-<td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor">
-#if ($marker.trip)
-<b>$marker.trip.destination</b><br>
-<div class="small">$Msg.calendar.duration($marker.begins(), $marker.ends())
-#if ($marker.trip.description)
-<br>$marker.trip.description
-#end
-</div>
-#else
-$marker.text()
-#end
-#if (($userid != -1) && ($userid == $marker.owner()))
-<br><a href="edittrip.wm?tripid=$marker.tripid()">[edit]</a>
-#end
-</td>
+#if ($names)
+  <td valign="top">
+  <table cellpadding="4" cellspacing="2" border="0">
+  <tr><td><b>Key</b></td>
+  #set $i = 0
+  #foreach $name in $names
+    <tr><td bgcolor="$colors.get($i)">$name</td>
+    #set $i = $i + 1
+  #end
+  </tr>
+  </table>
+  </td>
 #end
 </table>
 
