@@ -1,0 +1,17 @@
+Who Where When notes -*- mode: outline -*-
+
+* Bugs
+- Fix quote handling in form field fill-in. Sigh.
+
+* Feature requests:
+- (mdb) Highlight trips created/modified in the last week (since user last
+  seen).
+- (mdb) Pack columns and color code trips by traveler.
+- (ray) Send email when new trips are added.
+- (ray) Identify user accounts by email address rather than username.
+- (ray) Restrict calendar view access to members only.
+- (mdb) Handle overlapping trips (split overlapped trip up into pre and
+  post trips).
+- (ray) Some sort of default location handling.
+- (paulp) Combine trips that end and start on the same day in some
+  meaningful manner.
