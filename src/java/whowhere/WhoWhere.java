@@ -4,6 +4,7 @@
 package whowhere;
 
 import java.util.Properties;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
 import com.samskivert.io.PersistenceException;
@@ -43,9 +44,9 @@ public class WhoWhere extends Application
         return _usermgr;
     }
 
-    protected void willInit ()
+    protected void willInit (ServletConfig config)
     {
-        super.willInit();
+        super.willInit(config);
 
 	try {
             // create a static connection provider
@@ -77,12 +78,6 @@ public class WhoWhere extends Application
 	}
     }
 
-    /** Yes! We want a message manager. */
-    public String getMessageBundlePath ()
-    {
-        return MESSAGE_BUNDLE_PATH;
-    }
-
     /** We want a special site identifier. */
     protected SiteIdentifier createSiteIdentifier (ServletContext ctx)
     {
@@ -102,9 +97,6 @@ public class WhoWhere extends Application
 
     /** A reference to our trip repository. */
     protected TripRepository _triprep;
-
-    /** The name of our translation messages file. */
-    protected static final String MESSAGE_BUNDLE_PATH = "messages";
 
     /** The path to our database configuration file. */
     protected static final String CONN_CONFIG = "repository.properties";

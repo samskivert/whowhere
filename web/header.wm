@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<title>$i18n.header.combined_title($title)</title>
+<title>$i18n.header.combined_title($i18n.app_name, $title)</title>
 <link rel="stylesheet" type="text/css" href="/whowhere/style.css">
 </head>
 
@@ -14,7 +14,7 @@
 
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr bgcolor="$hcolor"><td align=right>
-<span class="big"><b>$i18n.header.title</b></span><br>
+<span class="big"><b>$i18n.header.title($i18n.app_name)</b></span><br>
 $title</td>
 </table>
 
