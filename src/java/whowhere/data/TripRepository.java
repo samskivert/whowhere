@@ -49,24 +49,25 @@ public class Repository extends MySQLRepository
      * @return the entry with the specified trip id or null if no entry
      * with that id exists.
      */
-    public Trip getTrip (int tripid)
+    public Trip getTrip (final int tripid)
 	throws SQLException
     {
-        // make sure our session is established
-        ensureConnection();
+        return (Trip)execute(new Operation () {
+            public Object invoke () throws SQLException
+            {
+                // look up the trip
+                Cursor ec = _ttable.select("where tripid = " + tripid);
 
-	// look up the trip
-	Cursor ec = _ttable.select("where tripid = " + tripid);
+                // fetch the trip from the cursor
+                Trip trip = (Trip)ec.next();
+                if (trip != null) {
+                    // call next() again to cause the cursor to close itself
+                    ec.next();
+                }
 
-	// fetch the trip from the cursor
-	Trip trip = (Trip)ec.next();
-
-	if (trip != null) {
-	    // call next() again to cause the cursor to close itself
-	    ec.next();
-	}
-
-	return trip;
+                return trip;
+            }
+        });
     }
 
     /**
@@ -77,26 +78,29 @@ public class Repository extends MySQLRepository
      * @param endingAfter The beginning of the date range.
      * @param startingBefore The end of the date range.
      */
-    public Trip[] getTrips (int travelerid, Date endingAfter,
-                            Date startingBefore)
+    public Trip[] getTrips (int travelerid, final Date endingAfter,
+                            final Date startingBefore)
 	throws SQLException
     {
-        // make sure our session is established
-        ensureConnection();
-
         // first we have to look up the travelerids of this traveler's
         // circle of friends
         int[] tids = loadCircle(travelerid, true);
-        String tidstr = StringUtil.toString(tids);
+        final String tidstr = StringUtil.toString(tids);
 
-        // now we can look up the trips
-	Cursor tc = _ttable.select("where ends >= '" + endingAfter +
-				   "' AND begins <= '" + startingBefore +
-                                   "' AND travelerid in " + tidstr);
-	List tlist = tc.toArrayList();
-	Trip[] trips = new Trip[tlist.size()];
-	tlist.toArray(trips);
-	return trips;
+        return (Trip[])execute(new Operation () {
+            public Object invoke () throws SQLException
+            {
+                // now we can look up the trips
+                String query = "where ends >= '" + endingAfter +
+                    "' AND begins <= '" + startingBefore +
+                    "' AND travelerid in " + tidstr;
+                Cursor tc = _ttable.select(query);
+                List tlist = tc.toArrayList();
+                Trip[] trips = new Trip[tlist.size()];
+                tlist.toArray(trips);
+                return trips;
+            }
+        });
     }
 
     /**
@@ -109,13 +113,10 @@ public class Repository extends MySQLRepository
      * @return An array containing the userids of the friends of the
      * specified traveler. An array is always returned, never null.
      */
-    public int[] loadCircle (int travelerid, boolean includeTraveler)
+    public int[] loadCircle (final int travelerid, boolean includeTraveler)
 	throws SQLException
     {
-        // make sure our session is established
-        ensureConnection();
-
-        ArrayList flist = new ArrayList();
+        final ArrayList flist = new ArrayList();
 
         // add the travler themselves to their circle if requested
         if (includeTraveler) {
@@ -123,18 +124,25 @@ public class Repository extends MySQLRepository
         }
 
         // now look up their friends
-	Statement stmt = _session.connection.createStatement();
-        try {
-            String query = "select friendid from friends " +
-                "where travelerid = " + travelerid;
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                flist.add(rs.getObject(1));
-            }
+        execute(new Operation () {
+            public Object invoke () throws SQLException
+            {
+                Statement stmt = _session.connection.createStatement();
+                try {
+                    String query = "select friendid from friends " +
+                        "where travelerid = " + travelerid;
+                    ResultSet rs = stmt.executeQuery(query);
+                    while (rs.next()) {
+                        flist.add(rs.getObject(1));
+                    }
+                    // nothing to return
+                    return null;
 
-        } finally {
-            stmt.close();
-        }
+                } finally {
+                    stmt.close();
+                }
+            }
+        });
 
         // and create an integer array
         int[] circle = new int[flist.size()];
@@ -148,79 +156,95 @@ public class Repository extends MySQLRepository
      * Expands the friends circle of two travelers by placing each of the
      * travelers into the other's friends circle.
      */
-    public void expandCircle (int tid1, int tid2)
+    public void expandCircle (final int tid1, final int tid2)
         throws SQLException
     {
-        // make sure our session is established
-        ensureConnection();
+        execute(new Operation () {
+            public Object invoke () throws SQLException
+            {
+                boolean add1 = true, add2 = true;
+                Statement stmt = _session.connection.createStatement();
 
-        boolean add1 = true, add2 = true;
-	Statement stmt = _session.connection.createStatement();
+                try {
+                    // make sure they aren't already in one another's circle
+                    String query = "select travelerid from friends where " +
+                        "(travelerid=" + tid1 +
+                        " AND friendid=" + tid2 + ") OR " +
+                        "(travelerid=" + tid2 +
+                        " AND friendid=" + tid1 + ")";
+                    ResultSet rs = stmt.executeQuery(query);
+                    while (rs.next()) {
+                        if (rs.getInt(1) == tid1) {
+                            add1 = false;
+                        }
+                        if (rs.getInt(1) == tid2) {
+                            add2 = false;
+                        }
+                    }
 
-        try {
-            // make sure they aren't already in one another's circle
-            String query = "select travelerid from friends where " +
-                "(travelerid=" + tid1 + " AND friendid=" + tid2 + ") OR " +
-                "(travelerid=" + tid2 + " AND friendid=" + tid1 + ")";
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                if (rs.getInt(1) == tid1) {
-                    add1 = false;
+                    // now add whichever connections need to be added
+                    if (add1) {
+                        query = "insert into friends values(" +
+                            tid1 + ", " + tid2 + ")";
+                        stmt.executeUpdate(query);
+                    }
+                    if (add2) {
+                        query = "insert into friends values(" +
+                            tid2 + ", " + tid1 + ")";
+                        stmt.executeUpdate(query);
+                    }
+
+                    // nothing to return
+                    return null;
+
+                } finally {
+                    stmt.close();
                 }
-                if (rs.getInt(1) == tid2) {
-                    add2 = false;
-                }
             }
-
-            // now add whichever connections need to be added
-            if (add1) {
-                stmt.executeUpdate("insert into friends values(" + tid1 +
-                                   ", " + tid2 + ")");
-            }
-            if (add2) {
-                stmt.executeUpdate("insert into friends values(" + tid2 +
-                                   ", " + tid1 + ")");
-            }
-
-        } finally {
-            stmt.close();
-        }
+        });
     }
 
     /**
      * Removes the link between two travelers in the friends table.
      */
-    public void excommunicate (int tid1, int tid2)
+    public void excommunicate (final int tid1, final int tid2)
         throws SQLException
     {
-        // make sure our session is established
-        ensureConnection();
+        execute(new Operation () {
+            public Object invoke () throws SQLException
+            {
+                Statement stmt = _session.connection.createStatement();
+                try {
+                    // simply remove both rows
+                    stmt.executeUpdate("delete from friends where " +
+                                       "travelerid = " + tid1 +
+                                       " AND friendid = " + tid2);
+                    stmt.executeUpdate("delete from friends where " +
+                                       "travelerid = " + tid2 +
+                                       " AND friendid = " + tid1);
+                    // nothing to return
+                    return null;
 
-	Statement stmt = _session.connection.createStatement();
-        try {
-            // simply remove both rows
-            stmt.executeUpdate("delete from friends where " +
-                               "travelerid = " + tid1 +
-                               " AND friendid = " + tid2);
-            stmt.executeUpdate("delete from friends where " +
-                               "travelerid = " + tid2 +
-                               " AND friendid = " + tid1);
-        } finally {
-            stmt.close();
-        }
+                } finally {
+                    stmt.close();
+                }
+            }
+        });
     }
 
-    public Trip[] getTrips (int travelerid)
+    public Trip[] getTrips (final int travelerid)
 	throws SQLException
     {
-        // make sure our session is established
-        ensureConnection();
-
-	Cursor tc = _ttable.select("where travelerid = " + travelerid);
-	List tlist = tc.toArrayList();
-	Trip[] trips = new Trip[tlist.size()];
-	tlist.toArray(trips);
-	return trips;
+        return (Trip[])execute(new Operation () {
+            public Object invoke () throws SQLException
+            {
+                Cursor tc = _ttable.select("where travelerid = " + travelerid);
+                List tlist = tc.toArrayList();
+                Trip[] trips = new Trip[tlist.size()];
+                tlist.toArray(trips);
+                return trips;
+            }
+        });
     }
 
     /**
@@ -232,13 +256,16 @@ public class Repository extends MySQLRepository
 	throws SQLException
     {
 	execute(new Operation () {
-	    public void invoke () throws SQLException
+	    public Object invoke () throws SQLException
 	    {
 		// insert the trip into the table
 		_ttable.insert(trip);
 
 		// update the tripid now that it's known
 		trip.tripid = lastInsertedId();
+
+                // nothing to return
+                return null;
 	    }
 	});
     }
@@ -250,9 +277,11 @@ public class Repository extends MySQLRepository
 	throws SQLException
     {
 	execute(new Operation () {
-	    public void invoke () throws SQLException
+	    public Object invoke () throws SQLException
 	    {
 		_ttable.update(trip);
+                // nothing to return
+                return null;
 	    }
 	});
     }
@@ -264,9 +293,11 @@ public class Repository extends MySQLRepository
 	throws SQLException
     {
 	execute(new Operation () {
-	    public void invoke () throws SQLException
+	    public Object invoke () throws SQLException
 	    {
 		_ttable.delete(trip);
+                // nothing to return
+                return null;
 	    }
 	});
     }
