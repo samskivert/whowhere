@@ -51,6 +51,9 @@ public class Repository extends MySQLRepository
     public Trip getTrip (int tripid)
 	throws SQLException
     {
+        // make sure our session is established
+        ensureConnection();
+
 	// look up the trip
 	Cursor ec = _ttable.select("where tripid = " + tripid);
 
@@ -74,6 +77,9 @@ public class Repository extends MySQLRepository
     public Trip[] getTrips (Date endingAfter, Date startingBefore)
 	throws SQLException
     {
+        // make sure our session is established
+        ensureConnection();
+
 	Cursor tc = _ttable.select("where ends >= '" + endingAfter +
 				   "' AND begins <= '" + startingBefore + "'");
 	List tlist = tc.toArrayList();
@@ -85,6 +91,9 @@ public class Repository extends MySQLRepository
     public Trip[] getTrips (int travelerid)
 	throws SQLException
     {
+        // make sure our session is established
+        ensureConnection();
+
 	Cursor tc = _ttable.select("where travelerid = " + travelerid);
 	List tlist = tc.toArrayList();
 	Trip[] trips = new Trip[tlist.size()];
