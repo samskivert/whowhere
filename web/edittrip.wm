@@ -1,4 +1,4 @@
-#set $title = "Edit trip"
+#set $title = $Msg.edittrip.title
 #parse "/whowhere/header.wm"
 
 <p>
@@ -8,30 +8,30 @@
 <input type="hidden" name="action" value="update">
 
 <table cellpadding="4" cellspacing="0" border="0">
-<tr><td bgcolor="#99CC66" colspan="2">
-<b>Edit trip</b></td></td>
+<tr><td bgcolor="$tcolor" colspan="2">
+<b>$Msg.edittrip.edit.title</b></td></td>
 
-<tr><td align="right">Destination</td>
+<tr><td align="right">$Msg.edittrip.edit.destination</td>
 <td><input type="text" name="destination" value="$trip.destination"></td></tr>
-<tr><td align="right">Begins</td>
+<tr><td align="right">$Msg.edittrip.edit.begins</td>
 <td><input type="text" name="begins" value="$trip.begins"></td></tr>
-<tr><td align="right">Ends</td>
+<tr><td align="right">$Msg.edittrip.edit.ends</td>
 <td><input type="text" name="ends" value="$trip.ends"></td></tr>
 
-<tr><td colspan="2" align="right" bgcolor="#CCFF99">
-<input type="submit" name="submit" value="Update"></td></tr>
+<tr><td colspan="2" align="right" bgcolor="$scolor">
+<input type="submit" name="submit" value="$Msg.edittrip.edit.submit"></td></tr>
 </form>
 
 <tr><td colspan="2">&nbsp;</td></td>
 
-<tr><td bgcolor="#99CC66" colspan="2">
-<b>Delete trip</b></td></td>
+<tr><td bgcolor="$tcolor" colspan="2">
+<b>$Msg.edittrip.delete.title</b></td></td>
 
 <form action="edittrip.wm">
 <input type="hidden" name="tripid" value="$trip.tripid">
 <input type="hidden" name="action" value="delete">
-<tr><td colspan="2" align="right" bgcolor="#CCFF99">
-<input type="submit" name="submit" value="Delete"></td></tr>
+<tr><td colspan="2" align="right" bgcolor="$scolor">
+<input type="submit" name="submit" value="$Msg.edittrip.delete.submit"></td></tr>
 </form>
 
 </table>

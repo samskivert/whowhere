@@ -7,6 +7,7 @@ import java.util.Properties;
 import javax.servlet.ServletContext;
 
 import com.samskivert.servlet.user.UserManager;
+import com.samskivert.webmacro.Application;
 import whowhere.data.Repository;
 
 /**
@@ -14,15 +15,21 @@ import whowhere.data.Repository;
  * (like the database repository) and handles initialization and cleanup
  * for those resources.
  */
-public class WhoWhere
+public class WhoWhere extends Application
 {
-    /** The database repository in use by the application. */
-    public static Repository repository;
+    /** Returns the database repository in use by the application. */
+    public Repository getRepository ()
+    {
+        return _repository;
+    }
 
-    /** The user manager in use by the application. */
-    public static UserManager usermgr;
+    /** Returns the user manager in use by the application. */
+    public UserManager getUserManager ()
+    {
+        return _usermgr;
+    }
 
-    public static void init (ServletContext context)
+    public void init (ServletContext context)
     {
 	try {
 	    // initialize the user manager
@@ -32,7 +39,7 @@ public class WhoWhere
 	    props.put("username", "www");
 	    props.put("password", "Il0ve2PL@Y");
 	    props.put("login_url", "/usermgmt/login.wm?from=%R");
-	    usermgr = new UserManager(props);
+	    _usermgr = new UserManager(props);
 
 	    // initialize the trip repository
 	    props = new Properties();
@@ -40,7 +47,7 @@ public class WhoWhere
 	    props.put("url", "jdbc:mysql://localhost:3306/whowhere");
 	    props.put("username", "www");
 	    props.put("password", "Il0ve2PL@Y");
-	    repository = new Repository(props);
+	    _repository = new Repository(props);
 
 	    Log.info("WhoWhere application initialized.");
 
@@ -49,15 +56,27 @@ public class WhoWhere
 	}
     }
 
-    public static void shutdown ()
+    public void shutdown ()
     {
 	try {
-	    repository.shutdown();
-	    usermgr.shutdown();
+	    _repository.shutdown();
+	    _usermgr.shutdown();
 	    Log.info("WhoWhere application shutdown.");
 
 	} catch (Throwable t) {
 	    Log.warning("Error shutting down repository: " + t);
 	}
     }
+
+    /** Yes! We want a message manager. */
+    public String getMessageBundlePath ()
+    {
+        return MESSAGE_BUNDLE_PATH;
+    }
+
+    protected Repository _repository;
+    protected UserManager _usermgr;
+
+    /** The name of our translation messages file. */
+    protected static final String MESSAGE_BUNDLE_PATH = "messages";
 }

@@ -1,4 +1,4 @@
-#set $title = "New trip"
+#set $title = $Msg.newtrip.title
 #parse "/whowhere/header.wm"
 
 <p>
@@ -7,18 +7,18 @@
 <input type="hidden" name="action" value="create">
 
 <table cellpadding="4" cellspacing="0" border="0">
-<tr><td bgcolor="#99CC66" colspan="2">
-<b>Create a new trip</b></td></td>
+<tr><td bgcolor="$tcolor" colspan="2">
+<b>$Msg.newtrip.create.title</b></td></td>
 
-<tr><td align="right">Destination</td>
+<tr><td align="right">$Msg.newtrip.create.destination</td>
 <td><input type="text" name="destination" value="$Form.destination"></td></tr>
-<tr><td align="right">Begins</td>
+<tr><td align="right">$Msg.newtrip.create.begins</td>
 <td><input type="text" name="begins" value="$Form.begins"></td></tr>
-<tr><td align="right">Ends</td>
+<tr><td align="right">$Msg.newtrip.create.ends</td>
 <td><input type="text" name="ends" value="$Form.ends"></td></tr>
 
-<tr><td colspan="2" align="right" bgcolor="#CCFF99">
-<input type="submit" name="submit" value="Create"></td></tr>
+<tr><td colspan="2" align="right" bgcolor="$scolor">
+<input type="submit" name="submit" value="$Msg.newtrip.create.submit"></td></tr>
 </table>
 
 </form>

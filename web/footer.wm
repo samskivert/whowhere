@@ -1,9 +1,9 @@
 <p>
 <table cellpadding=6 cellspacing=0 border=0 width="600">
-<tr bgcolor="#CCCCCC">
-<td><a href="http://www.waywardgeeks.org/">waywardgeeks.org</a> |
-<a href="calendar.wm">$Msg.footer.calendar_link</a> |
-<a href="newtrip.wm">$Msg.footer.newtrip_link</a>
+<tr bgcolor="$hcolor">
+<td><a href="http://www.waywardgeeks.org/">waywardgeeks.org</a>
+| <a href="calendar.wm">$Msg.footer.calendar_link</a>
+| <a href="newtrip.wm">$Msg.footer.newtrip_link</a>
 </td>
 <td align="right">
 &copy;2001 

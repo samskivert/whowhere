@@ -9,7 +9,6 @@
 }
 #foreach $marker in $markers {
 #if ($marker.column == 0) {
-<!--<tr><td colspan="4" bgcolor="#000000" height="2"></td></tr>-->
 <tr>
 }
 <td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor()">
@@ -22,7 +21,7 @@ $marker.text()
 </table>
 } #else {
 <table cellpadding="10" cellspacing="4" border="0">
-<tr><td valign="top" bgcolor="#99CC66">
+<tr><td valign="top" bgcolor="$tcolor">
 $Msg.calendar.no_trips
 </td></tr>
 </table>

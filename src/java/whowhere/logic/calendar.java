@@ -17,22 +17,26 @@ import whowhere.data.*;
 
 public class calendar implements Logic
 {
-    public void invoke (WebContext context) throws Exception
+    public void invoke (Application app, WebContext ctx)
+        throws Exception
     {
+        UserManager usermgr = ((WhoWhere)app).getUserManager();
+
 	// parse the dates we were given, if we were given any
-	Bag wform = (Bag)context.getProperty("Form");
+	Bag wform = (Bag)ctx.getProperty("Form");
 	String begin = (String)wform.get("begin");
 	String end = (String)wform.get("end");
 	java.sql.Date endingAfter = null, startingBefore = null;
+        String errmsg = null;
 
 	if (begin != null && end != null) {
 	    endingAfter = new java.sql.Date(_qfmt.parse(begin).getTime());
 	    if (endingAfter == null) {
-		context.put("error", "err.invalid_begin_date");
+		errmsg = "calendar.error.invalid_begin_date";
 	    }
 	    startingBefore = new java.sql.Date(_qfmt.parse(end).getTime());
 	    if (startingBefore == null) {
-		context.put("error", "err.invalid_end_date");
+		errmsg = "calendar.error.invalid_end_date";
 	    }
 	}
 
@@ -47,11 +51,11 @@ public class calendar implements Logic
 	Hashtable form = new Hashtable();
 	form.put("begin", _qfmt.format(endingAfter));
 	form.put("end", _qfmt.format(startingBefore));
-	context.put("Form", form);
+	ctx.put("Form", form);
 
 	// load up the trips
-	Trip[] trips =
-	    WhoWhere.repository.getTrips(endingAfter, startingBefore);
+        Repository rep = ((WhoWhere)app).getRepository();
+	Trip[] trips = rep.getTrips(endingAfter, startingBefore);
 
 	// bail out now if we've got no trips
 	if (trips == null) {
@@ -59,13 +63,13 @@ public class calendar implements Logic
 	}
 
 	// load up our user record
-	User user = WhoWhere.usermgr.loadUser(context.getRequest());
+	User user = usermgr.loadUser(ctx.getRequest());
 	// and put our userid into the context for the display to muck
 	// with
 	if (user != null) {
-	    context.put("userid", new Integer(user.userid));
+	    ctx.put("userid", new Integer(user.userid));
 	} else {
-	    context.put("userid", new Integer(-1));
+	    ctx.put("userid", new Integer(-1));
 	}
 
 	// sort our trips by start date
@@ -89,9 +93,9 @@ public class calendar implements Logic
 	for (int i = 0; i < tnames.size(); i++) {
 	    userids[i] = ((Integer)tnames.get(i)).intValue();
 	}
-	UserRepository rep = WhoWhere.usermgr.getRepository();
-	String[] names = rep.loadUserNames(userids);
-	context.put("names", names);
+        UserRepository urep = usermgr.getRepository();
+	String[] names = urep.loadUserNames(userids);
+	ctx.put("names", names);
 
 	// phase one of the processing invovles figuring out how all of
 	// the trips overlap and how much vertical space each trip will
@@ -178,8 +182,13 @@ public class calendar implements Logic
 
 	// and stuff it on into the context for the display to worry about
 	if (markers.size() > 0) {
-	    context.put("markers", markers);
+	    ctx.put("markers", markers);
 	}
+
+        // handle any message that was generated
+        if (errmsg != null) {
+            ctx.put("error", app.translate(ctx, errmsg));
+        }
     }
 
     /** Used to sort out trip layout on the calendar display. */
