@@ -15,8 +15,7 @@
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr bgcolor="$hcolor"><td align=right>
 <span class="big"><b>$Msg.header.title</b></span><br>
-$title
-</td>
+$title</td>
 </table>
 
 #if ($error)
