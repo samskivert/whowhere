@@ -17,12 +17,14 @@
 
 <tr><td align="right">$Msg.addfriend.create.address</td>
 <td colspan="3">
-<input type="text" name="address" value="$Form.address" size="20">
+<input type="text" name="address"
+       value="$Text.HTMLEncode($Form.address)" size="20">
 </td></tr>
 
 <tr><td align="right">$Msg.addfriend.create.subject</td>
 <td colspan="3">
-<input type="text" name="subject" value="$Form.subject" size="40">
+<input type="text" name="subject"
+       value="$Text.HTMLEncode($Form.subject)" size="40">
 </td></tr>
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
