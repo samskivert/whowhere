@@ -20,7 +20,18 @@ public class calendar implements Logic
     public void invoke (Application app, WebContext ctx)
         throws Exception
     {
+	// being logged in is manditory now that we display trips for a
+	// user's circle of friends
         UserManager usermgr = ((WhoWhere)app).getUserManager();
+	User user = usermgr.requireUser(ctx.getRequest());
+
+	// put our userid into the context for the display to muck with
+	if (user != null) {
+	    ctx.put("userid", new Integer(user.userid));
+	} else {
+	    ctx.put("userid", new Integer(-1));
+	}
+
         String errmsg = null;
 
         // generate some default dates
@@ -54,21 +65,12 @@ public class calendar implements Logic
 
 	// load up the trips
         Repository rep = ((WhoWhere)app).getRepository();
-	Trip[] trips = rep.getTrips(endingAfter, startingBefore);
+	Trip[] trips =
+            rep.getTrips(user.userid, endingAfter, startingBefore);
 
 	// bail out now if we've got no trips
 	if (trips == null) {
 	    return;
-	}
-
-	// load up our user record
-	User user = usermgr.loadUser(ctx.getRequest());
-	// and put our userid into the context for the display to muck
-	// with
-	if (user != null) {
-	    ctx.put("userid", new Integer(user.userid));
-	} else {
-	    ctx.put("userid", new Integer(-1));
 	}
 
 	// sort our trips by start date

@@ -1,0 +1,41 @@
+#set $title = $Msg.addfriend.title
+#parse "/header.wm"
+
+#if (!$noform)
+#if (!$error)
+<table cellpadding="6" cellspacing="0" border="0" width="600">
+<tr><td>$Msg.addfriend.howto</td></tr>
+</table>
+#end
+
+<table cellpadding="4" cellspacing="0" border="0">
+<tr><td bgcolor="$tcolor" colspan="4">
+<b>$Msg.addfriend.create.title</b></td></td>
+
+<form action="addfriend.wm">
+<input type="hidden" name="action" value="request">
+
+<tr><td align="right">$Msg.addfriend.create.address</td>
+<td colspan="3">
+<input type="text" name="address" value="$Form.address" size="20">
+</td></tr>
+
+<tr><td align="right">$Msg.addfriend.create.subject</td>
+<td colspan="3">
+<input type="text" name="subject" value="$Form.subject" size="40">
+</td></tr>
+
+<tr><td colspan="4" align="right" bgcolor="$scolor">
+<input type="submit" name="submit" value="$Msg.addfriend.create.submit"></td></tr>
+</form>
+</table>
+
+#if ($email)
+<p> $Msg.addfriend.example_header
+<pre>
+$email
+</pre>
+#end
+#end
+
+#parse "/footer.wm"

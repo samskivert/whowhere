@@ -1,15 +1,14 @@
 <p>
 <table cellpadding=6 cellspacing=0 border=0 width="600">
 <tr bgcolor="$hcolor">
-<td><a href="http://www.waywardgeeks.org/">waywardgeeks.org</a>
-| <a href="calendar.wm">$Msg.footer.calendar_link</a>
+<td><a href="calendar.wm">$Msg.footer.calendar_link</a>
 | <a href="newtrip.wm">$Msg.footer.newtrip_link</a>
+| <a href="addfriend.wm">$Msg.footer.addfriend_link</a>
 | <a href="/usermgmt/account.wm">$Msg.footer.account_link</a>
 </td>
 <td align="right">
 &copy;2001 
-<a href="http://www.samskivert.com/">michael bayne</a> 
-<a href="mailto:mdb@samskivert.com">&lt;mdb@samskivert.com&gt;</a>
+<a href="http://www.waywardgeeks.org/">wayward geeks</a>
 </td>
 </table>
 
