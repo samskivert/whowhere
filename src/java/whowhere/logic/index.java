@@ -32,7 +32,6 @@ public class index implements Logic
             } else {
                 uri = StringUtil.replace(uri, "index.wm", "calendar.wm");
             }
-            System.out.println("URI: " + uri);
             throw new RedirectException(uri);
         }
     }
