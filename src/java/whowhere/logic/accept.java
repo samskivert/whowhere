@@ -9,6 +9,7 @@ import org.webmacro.servlet.WebContext;
 import com.samskivert.servlet.user.*;
 import com.samskivert.servlet.util.RequestUtils;
 import com.samskivert.webmacro.*;
+import com.samskivert.util.Crypt;
 
 import whowhere.Log;
 import whowhere.WhoWhere;
@@ -23,15 +24,27 @@ public class accept implements Logic
 	User user = usermgr.loadUser(ctx.getRequest());
         String errmsg = null;
 
-        // load up the inviting user
+        // get our parameters
 	int friendid = FormUtil.requireIntParameter(
-            ctx, "who", "accept.error.missing_who");
+            ctx, "who", "accept.error.missing_param");
+	int random = FormUtil.requireIntParameter(
+            ctx, "when", "accept.error.missing_param");
+	String hash = FormUtil.requireParameter(
+            ctx, "how", "accept.error.missing_param");
+
+        // load up the inviting user
         UserRepository urep = usermgr.getRepository();
         User inviter = urep.loadUser(friendid);
         if (inviter == null) {
             throw new FriendlyException("accept.error.no_such_user");
         }
         ctx.put("inviter", inviter.realname);
+
+        // make sure the authorization stuff matches
+        String thash = Crypt.crypt(Integer.toString(random), inviter.password);
+        if (!thash.equals(hash)) {
+            throw new FriendlyException("accept.error.missing_param");
+        }
 
         // if they aren't logged in, configure the page to let them know
 	// that they need to

@@ -3,7 +3,9 @@
 
 package whowhere.logic;
 
+import java.net.URLEncoder;
 import java.util.Hashtable;
+import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 
 import org.webmacro.*;
@@ -12,6 +14,7 @@ import org.webmacro.servlet.WebContext;
 import com.samskivert.net.MailUtil;
 import com.samskivert.servlet.user.*;
 import com.samskivert.webmacro.*;
+import com.samskivert.util.Crypt;
 import com.samskivert.util.StringUtil;
 
 import whowhere.Log;
@@ -121,6 +124,13 @@ public class addfriend implements Logic
                                         "addfriend.wm", "accept.wm");
         url.append(uri);
         url.append("?who=").append(user.userid);
+        // generate an encryption of a random number and the requesting
+        // user's password so that people can't spoof invitations from
+        // someone that didn't invite them
+        int random = new Random().nextInt(100);
+        url.append("&when=").append(random);
+        String hash = Crypt.crypt(Integer.toString(random), user.password);
+        url.append("&how=").append(URLEncoder.encode(hash));
         return url.toString();
     }
 }
