@@ -19,6 +19,31 @@ public class Trip implements Comparable
 
     public String description;
 
+    public int getTripid ()
+    {
+        return tripid;
+    }
+
+    public String getDestination ()
+    {
+        return destination;
+    }
+
+    public String getDescription ()
+    {
+        return description;
+    }
+
+    public Date getBegins ()
+    {
+        return begins;
+    }
+
+    public Date getEnds ()
+    {
+        return ends;
+    }
+
     public int compareTo (Object other)
     {
 	return begins.compareTo(((Trip)other).begins);

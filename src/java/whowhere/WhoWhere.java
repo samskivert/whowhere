@@ -10,7 +10,7 @@ import com.samskivert.jdbc.ConnectionProvider;
 import com.samskivert.jdbc.StaticConnectionProvider;
 
 import com.samskivert.servlet.user.UserManager;
-import com.samskivert.webmacro.Application;
+import com.samskivert.velocity.Application;
 import whowhere.data.TripRepository;
 
 /**

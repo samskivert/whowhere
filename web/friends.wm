@@ -1,61 +1,51 @@
-#set $title = $Msg.friends.title
-#parse "/header.wm"
+#set ($title = $i18n.friends.title)
+#parse ("/header.wm")
 
 #if (!$error)
   <table cellpadding="6" cellspacing="0" border="0" width="100%">
-  <tr><td>$Msg.friends.howto("addfriend.wm")</td></tr>
+  <tr><td>$i18n.friends.howto("addfriend.wm")</td></tr>
   </table>
 #end
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="2">
-<b>$Msg.friends.friends.title</b></td></td>
-#if ($fids.length > 0)
-
-## this is an annoying webmacro hack. i wish it were easier to iterate
-## over two arrays at once
-#set $iter = 0
-#foreach $fid in $fids
+<b>$i18n.friends.friends.title</b></td></td>
+#if ($names.size() > 0)
+#foreach ($fid in $fids)
 <form action="friends.wm">
-<input type="hidden" name="action" value="delete">
-<input type="hidden" name="who" value="$fid">
-<tr><td>$names.get($iter)</td>
-<td><input type="submit" name="submit"
-     value="$Msg.friends.friends.submit"></td></tr>
+$form.fixedHidden("action", "delete")
+$form.fixedHidden("who", "$fid")
+<tr><td>$names.get($vidx)</td>
+<td>$form.submit("submit", $i18n.friends.friends.submit)</td></tr>
 </form>
-#set $iter = $iter + 1
 #end
-
 #else
-<tr><td colspan="2">$Msg.friends.no_friends("addfriend.wm")</td></tr>
+<tr><td colspan="2">$i18n.friends.no_friends("addfriend.wm")</td></tr>
 #end
 </table>
 
 <p>
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor">
-<b>$Msg.friends.everyone.title</b></td></tr>
+<b>$i18n.friends.everyone.title</b></td></tr>
 
 <tr><td>
-$Msg.friends.everyone.explain("addfriend.wm")
+$i18n.friends.everyone.explain("addfriend.wm")
 
 <p>
 <table cellpadding="2" cellspacing="0" border="1">
 <tr>
-#set $iter = 0
-#foreach $name in $allnames
-#if ($iter == 0) { </tr><tr> }
+#foreach ($name in $allnames)
+#if ($vidx % 5 == 0) </tr><tr> #end
 <td>$name</td>
-#set $iter = $iter + 1
-#if ($iter == 5) { #set $iter = 0 }
 #end
 </tr>
 </table>
 
 <p class="small">
-$Msg.friends.everyone.caveat
+$i18n.friends.everyone.caveat
 
 </td></tr>
 </table>
 
-#parse "/footer.wm"
+#parse ("/footer.wm")

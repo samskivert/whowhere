@@ -5,16 +5,17 @@ package whowhere.logic;
 
 import java.util.Date;
 
-import org.webmacro.servlet.WebContext;
-import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
+import com.samskivert.servlet.util.DataValidationException;
+import com.samskivert.servlet.util.ParameterUtil;
+import com.samskivert.velocity.*;
 
 import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class edittrip implements Logic
 {
-    public void invoke (Application app, WebContext ctx)
+    public void invoke (Application app, InvocationContext ctx)
         throws Exception
     {
         UserManager usermgr = ((WhoWhere)app).getUserManager();
@@ -22,8 +23,8 @@ public class edittrip implements Logic
         String errmsg = null;
 
         // look up the specified trip
-	int tripid = FormUtil.requireIntParameter(
-            ctx, "tripid", "edittrip.error.missing_trip_id");
+	int tripid = ParameterUtil.requireIntParameter(
+            ctx.getRequest(), "tripid", "edittrip.error.missing_trip_id");
         TripRepository rep = ((WhoWhere)app).getRepository();
 	Trip trip = rep.getTrip(tripid);
 	if (trip == null) {
@@ -39,22 +40,24 @@ public class edittrip implements Logic
 
 	// if we're submitting edits, modify the trip object and store it
 	// back into the database
-	if (FormUtil.equals(ctx, "action", "update")) {
+	if (ParameterUtil.parameterEquals(
+            ctx.getRequest(), "action", "update")) {
 	    // insert the trip into the context so that it will be
 	    // displayed to the user
 	    ctx.put("trip", trip);
 
 	    // parse our updated fields
-	    trip.destination = FormUtil.requireParameter(
-                ctx, "destination", "edittrip.error.missing_destination");
-	    Date date = FormUtil.requireDateParameter(
-                ctx, "begins", "edittrip.error.invalid_begins");
+	    trip.destination = ParameterUtil.requireParameter(
+                ctx.getRequest(), "destination",
+                "edittrip.error.missing_destination");
+	    Date date = ParameterUtil.requireDateParameter(
+                ctx.getRequest(), "begins", "edittrip.error.invalid_begins");
 	    trip.begins = new java.sql.Date(date.getTime());
-	    date = FormUtil.requireDateParameter(
-                ctx, "ends", "edittrip.error.invalid_ends");
+	    date = ParameterUtil.requireDateParameter(
+                ctx.getRequest(), "ends", "edittrip.error.invalid_ends");
 	    trip.ends = new java.sql.Date(date.getTime());
-            trip.description = FormUtil.getParameter(
-                ctx, "description", false);
+            trip.description = ParameterUtil.getParameter(
+                ctx.getRequest(), "description", false);
 
 	    // check those new dates for sense and sensibility
 	    if (trip.begins.compareTo(trip.ends) > 0) {
@@ -68,7 +71,8 @@ public class edittrip implements Logic
 	    // let the user know we updated
 	    errmsg = "edittrip.message.trip_updated";
 
-	} else if (FormUtil.equals(ctx, "action", "delete")) {
+	} else if (ParameterUtil.parameterEquals(
+            ctx.getRequest(), "action", "delete")) {
 	    // remove the trip from the repository
 	    rep.deleteTrip(trip);
 

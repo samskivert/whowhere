@@ -1,8 +1,8 @@
-#set $title = $Msg.index.title
-#parse "/header.wm"
+#set ($title = $i18n.index.title)
+#parse ("/header.wm")
 
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
-<tr><td>$Msg.index.explain</td></tr>
+<tr><td>$i18n.index.explain</td></tr>
 <tr><td>
 <table cellpadding="0" cellspacing="0" border="0">
 <tr><td>
@@ -23,8 +23,8 @@
   <!-- end sample calendar -->
   </td></table>
 </td></tr>
-<tr><td>$Msg.index.need_account("/usermgmt/login.wm?from=/whowhere/", "/usermgmt/register.wm?from=/whowhere/")</td></tr>
-<tr><td>$Msg.index.closing_remarks</td></tr>
+<tr><td>$i18n.index.need_account("/usermgmt/login.wm?from=/whowhere/", "/usermgmt/register.wm?from=/whowhere/")</td></tr>
+<tr><td>$i18n.index.closing_remarks</td></tr>
 </table>
 
-#parse "/footer.wm"
+#parse ("/footer.wm")

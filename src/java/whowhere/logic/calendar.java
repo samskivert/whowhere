@@ -6,18 +6,17 @@ package whowhere.logic;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.samskivert.util.HashIntMap;
-import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
-import org.webmacro.servlet.WebContext;
-import org.webmacro.util.Bag;
+import com.samskivert.servlet.util.ParameterUtil;
+import com.samskivert.util.HashIntMap;
+import com.samskivert.velocity.*;
 
 import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class calendar implements Logic
 {
-    public void invoke (Application app, WebContext ctx)
+    public void invoke (Application app, InvocationContext ctx)
         throws Exception
     {
 	// being logged in is manditory now that we display trips for a
@@ -49,10 +48,10 @@ public class calendar implements Logic
 	ctx.put("end", _qfmt.format(startingBefore));
 
 	// parse the dates we were given, if we were given any
-        Date ea = FormUtil.getDateParameter(
-            ctx, "begin", "calendar.error.invalid_begin_date");
-        Date sb = FormUtil.getDateParameter(
-            ctx, "end", "calendar.error.invalid_end_date");
+        Date ea = ParameterUtil.getDateParameter(
+            ctx.getRequest(), "begin", "calendar.error.invalid_begin_date");
+        Date sb = ParameterUtil.getDateParameter(
+            ctx.getRequest(), "end", "calendar.error.invalid_end_date");
 
         if (ea != null && sb != null) {
             endingAfter = new java.sql.Date(ea.getTime());
@@ -96,7 +95,9 @@ public class calendar implements Logic
         Arrays.sort(userids);
         UserRepository urep = usermgr.getRepository();
 	String[] names = urep.loadUserNames(userids);
-	ctx.put("names", names);
+        if (names.length > 0) {
+            ctx.put("names", names);
+        }
 
         // now that we have the travelers all nicely sorted, we can assign
         // the colors and put the color array into the context
@@ -262,6 +263,36 @@ public class calendar implements Logic
                 this.bgcolor = "#CCFF99";
             }
 	}
+
+        public Trip getTrip ()
+        {
+            return trip;
+        }
+
+        public Date getDate ()
+        {
+            return date;
+        }
+
+        public int getColumn ()
+        {
+            return column;
+        }
+
+        public int getRowstart ()
+        {
+            return rowstart;
+        }
+
+        public int getRowspan ()
+        {
+            return rowspan;
+        }
+
+        public String getBgcolor ()
+        {
+            return bgcolor;
+        }
 
 	public int compareTo (Object other)
 	{

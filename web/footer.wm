@@ -1,11 +1,11 @@
 <p>
 <table cellpadding=6 cellspacing=0 border=0 width="100%">
 <tr bgcolor="$hcolor">
-<td><a href="calendar.wm">$Msg.footer.calendar_link</a>
-| <a href="newtrip.wm">$Msg.footer.newtrip_link</a>
-| <a href="friends.wm">$Msg.footer.friends_link</a>
-| <a href="addfriend.wm">$Msg.footer.addfriend_link</a>
-| <a href="/usermgmt/account.wm">$Msg.footer.account_link</a>
+<td><a href="calendar.wm">$i18n.footer.calendar_link</a>
+| <a href="newtrip.wm">$i18n.footer.newtrip_link</a>
+| <a href="friends.wm">$i18n.footer.friends_link</a>
+| <a href="addfriend.wm">$i18n.footer.addfriend_link</a>
+| <a href="/usermgmt/account.wm">$i18n.footer.account_link</a>
 </td>
 <td align="right">
 &copy;2001 

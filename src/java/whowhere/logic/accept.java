@@ -3,20 +3,21 @@
 
 package whowhere.logic;
 
-import org.webmacro.*;
-import org.webmacro.servlet.WebContext;
-
 import com.samskivert.servlet.user.*;
+
+import com.samskivert.servlet.util.FriendlyException;
+import com.samskivert.servlet.util.ParameterUtil;
 import com.samskivert.servlet.util.RequestUtils;
-import com.samskivert.webmacro.*;
+
 import com.samskivert.util.Crypt;
+import com.samskivert.velocity.*;
 
 import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class accept implements Logic
 {
-    public void invoke (Application app, WebContext ctx)
+    public void invoke (Application app, InvocationContext ctx)
         throws Exception
     {
         UserManager usermgr = ((WhoWhere)app).getUserManager();
@@ -24,12 +25,12 @@ public class accept implements Logic
         String errmsg = null;
 
         // get our parameters
-	int friendid = FormUtil.requireIntParameter(
-            ctx, "who", "accept.error.missing_param");
-	int random = FormUtil.requireIntParameter(
-            ctx, "when", "accept.error.missing_param");
-	String hash = FormUtil.requireParameter(
-            ctx, "how", "accept.error.missing_param");
+	int friendid = ParameterUtil.requireIntParameter(
+            ctx.getRequest(), "who", "accept.error.missing_param");
+	int random = ParameterUtil.requireIntParameter(
+            ctx.getRequest(), "when", "accept.error.missing_param");
+	String hash = ParameterUtil.requireParameter(
+            ctx.getRequest(), "how", "accept.error.missing_param");
 
         // load up the inviting user
         UserRepository urep = usermgr.getRepository();
@@ -60,7 +61,8 @@ public class accept implements Logic
             }
 
             // they've accepted. update the friends table
-            if (FormUtil.equals(ctx, "action", "accept")) {
+            if (ParameterUtil.parameterEquals(
+                ctx.getRequest(), "action", "accept")) {
                 TripRepository rep = ((WhoWhere)app).getRepository();
                 rep.expandCircle(user.userid, friendid);
                 // let the user know that all systems are go

@@ -3,19 +3,21 @@
 
 package whowhere.logic;
 
+import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.util.Hashtable;
 import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 
-import org.webmacro.*;
-import org.webmacro.servlet.WebContext;
+import org.apache.velocity.Template;
 
 import com.samskivert.net.MailUtil;
 import com.samskivert.servlet.user.*;
-import com.samskivert.webmacro.*;
+import com.samskivert.servlet.util.ParameterUtil;
 import com.samskivert.util.Crypt;
 import com.samskivert.util.StringUtil;
+import com.samskivert.velocity.*;
 
 import whowhere.Log;
 import whowhere.WhoWhere;
@@ -23,27 +25,27 @@ import whowhere.data.*;
 
 public class addfriend implements Logic
 {
-    public void invoke (Application app, WebContext ctx)
+    public void invoke (Application app, InvocationContext ctx)
         throws Exception
     {
         UserManager usermgr = ((WhoWhere)app).getUserManager();
 	User user = usermgr.requireUser(ctx.getRequest());
         String errmsg = null;
 
-        // load up the email template (this exposes more innards of
-        // WebMacro than I'd like but we don't have a handle on the
-        // WMServlet at this point, so we've little choice)
-        Template etmpl = (Template)
-            ctx.getBroker().get("template", "/addfriend.tmpl");
+        // load up the email template
+        Template etmpl = ctx.getTemplate("/addfriend.tmpl");
 
 	// if they've submitted the form, we send an email to the
 	// specified address
-	if (FormUtil.equals(ctx, "action", "request")) {
+	if (ParameterUtil.parameterEquals(
+            ctx.getRequest(), "action", "request")) {
 	    // parse our fields
-            String address = FormUtil.requireParameter(
-                ctx, "address", "addfriend.error.missing_address");
-            String subject = FormUtil.requireParameter(
-                ctx, "subject", "addfriend.error.missing_subject");
+            String address = ParameterUtil.requireParameter(
+                ctx.getRequest(), "address",
+                "addfriend.error.missing_address");
+            String subject = ParameterUtil.requireParameter(
+                ctx.getRequest(), "subject",
+                "addfriend.error.missing_subject");
 
             // make sure the email address is valid
             if (MailUtil.isValidAddress(address)) {
@@ -64,14 +66,6 @@ public class addfriend implements Logic
             }
 
 	} else {
-	    // create defaults for the form values
-	    Hashtable defaults = new Hashtable();
-	    defaults.put("address", "");
-            String def =
-                app.translate(ctx, "addfriend.create.default_subject");
-	    defaults.put("subject", def);
-	    ctx.put("Form", defaults);
-
             // stick a default email in the context
             String url = constructURL(ctx.getRequest(), user);
             String msg = generateMailText("(Your name here)",
@@ -90,7 +84,7 @@ public class addfriend implements Logic
     protected String generateMailText (String name, String sender,
                                        String recipient, String subject,
                                        String url, Template etmpl,
-                                       WebContext ctx)
+                                       InvocationContext ctx)
     {
         // stick some values in the context and execute the email
         // template, then stick that in the context
@@ -101,11 +95,9 @@ public class addfriend implements Logic
         ctx.put("url", url);
 
         try {
-            FastWriter fw = new FastWriter(
-                ctx.getBroker(),
-                ctx.getResponse().getCharacterEncoding());
-            etmpl.write(fw, ctx);
-            return fw.toString();
+            StringWriter sw = new StringWriter();
+            etmpl.merge(ctx, sw);
+            return sw.toString();
 
         } catch (Exception e) {
             Log.warning("Error executing email template: " + e);

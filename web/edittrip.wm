@@ -1,52 +1,50 @@
-#set $title = $Msg.edittrip.title
-#parse "/header.wm"
+#set ($title = $i18n.edittrip.title)
+#parse ("/header.wm")
 
 <p>
-#if ($trip) {
+#if ($trip)
 <form action="edittrip.wm">
-<input type="hidden" name="tripid" value="$trip.tripid">
-<input type="hidden" name="action" value="update">
+$form.fixedHidden("tripid", "$trip.tripid")
+$form.fixedHidden("action", "update")
 
 <table cellpadding="4" cellspacing="0" border="0">
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$Msg.edittrip.edit.title</b></td></td>
+<b>$i18n.edittrip.edit.title</b></td></td>
 
-<tr><td align="right">$Msg.edittrip.edit.destination</td>
+<tr><td align="right">$i18n.edittrip.edit.destination</td>
 <td colspan="3">
-<input type="text" name="destination"
-       value="$Text.HTMLEncode($trip.destination)" size="40">
+$form.text("destination", "size='40'", $trip.destination)
 </td></tr>
-<tr><td align="right">$Msg.edittrip.edit.begins</td>
+<tr><td align="right">$i18n.edittrip.edit.begins</td>
 <td><font face="courier">
-<input type="text" name="begins" value="$trip.begins" size="10">
+$form.text("begins", "size='10'", $trip.begins)
 </font></td>
-<td align="right">$Msg.edittrip.edit.ends</td>
+<td align="right">$i18n.edittrip.edit.ends</td>
 <td><font face="courier">
-<input type="text" name="ends" value="$trip.ends" size="10">
+$form.text("ends", "size='10'", $trip.ends)
 </font></td></tr>
-<tr><td align="right">$Msg.edittrip.edit.description</td>
+<tr><td align="right">$i18n.edittrip.edit.description</td>
 <td colspan="3">
-<input type="text" name="description"
-       value="$Text.HTMLEncode($trip.description)" size="40">
+$form.text("description", "size='40'", $trip.description)
 </td></tr>
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-<input type="submit" name="submit" value="$Msg.edittrip.edit.submit"></td></tr>
+$form.submit("submit", $i18n.edittrip.edit.submit)</td></tr>
 </form>
 
 <tr><td colspan="4">&nbsp;</td></td>
 
 <tr><td bgcolor="$tcolor" colspan="4">
-<b>$Msg.edittrip.delete.title</b></td></td>
+<b>$i18n.edittrip.delete.title</b></td></td>
 
 <form action="edittrip.wm">
-<input type="hidden" name="tripid" value="$trip.tripid">
-<input type="hidden" name="action" value="delete">
+$form.fixedHidden("tripid", "$trip.tripid")
+$form.fixedHidden("action", "delete")
 <tr><td colspan="4" align="right" bgcolor="$scolor">
-<input type="submit" name="submit" value="$Msg.edittrip.delete.submit"></td></tr>
+$form.submit("submit", $i18n.edittrip.delete.submit)</td></tr>
 </form>
 
 </table>
-}
+#end
 
-#parse "/footer.wm"
+#parse ("/footer.wm")

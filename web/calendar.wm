@@ -1,9 +1,9 @@
-#set $title = $Msg.calendar.title
-#parse "/header.wm"
+#set ($title = $i18n.calendar.title)
+#parse ("/header.wm")
 
 #if (!$error)
   <table cellpadding="6" cellspacing="0" border="0" width="100%">
-  <tr><td>$Msg.calendar.howto("friends.wm", "newtrip.wm")</td></tr>
+  <tr><td>$i18n.calendar.howto("friends.wm", "newtrip.wm")</td></tr>
   </table>
 #end
 
@@ -12,10 +12,10 @@
 <table cellpadding="6" cellspacing="2" border="0">
 #if (!$markers)
   <tr><td width="100%" valign="top" bgcolor="$tcolor">
-    $Msg.calendar.no_trips("newtrip.wm")
+    $i18n.calendar.no_trips("newtrip.wm")
   </td>
 #else
-  #foreach $marker in $markers
+  #foreach ($marker in $markers)
     #if ($marker.column == 0)
     <tr>
     #end
@@ -23,7 +23,7 @@
     #if ($marker.trip)
       <b>$marker.trip.destination</b><br>
       <div class="small">
-      $Msg.calendar.duration($marker.begins(), $marker.ends())
+      $i18n.calendar.duration($marker.begins(), $marker.ends())
       #if ($marker.trip.description)
         <br>$marker.trip.description
       #end
@@ -39,16 +39,14 @@
   </table>
   </td>
 #end
-#if ($names.length > 0)
+#if ($names)
   <td valign="top">
   <table cellpadding="4" cellspacing="2" border="0">
   <tr><td><b>Key</b></td>
-  #set $i = 0
-  #foreach $name in $names
-    <tr><td bgcolor="$colors.get($i)">$name</td>
-    ## this will freak out if $i becomes larger than $colors.size(), but
-    ## we don't seem to have modulo, so I'm punting
-    #set $i = $i + 1
+  #foreach ($name in $names)
+    ## this will freak out if $vidx becomes larger than $colors.size(),
+    ## but we don't seem to have modulo, so I'm punting
+    <tr><td bgcolor="$colors.get($vidx)">$name</td>
   #end
   </tr>
   </table>
@@ -58,12 +56,12 @@
 
 <form action="calendar.wm">
 <table>
-<tr><td>$Msg.calendar.viewing_trips</td>
-<td><input type="text" name="begin" value="$begin"></td>
-<td>$Msg.calendar.to</td>
-<td><input type="text" name="end" value="$end"></td>
-<td><input type="submit" name="submit" value="$Msg.calendar.query"></td></tr>
+<tr><td>$i18n.calendar.viewing_trips</td>
+<td>$form.text("begin", "", $begin)</td>
+<td>$i18n.calendar.to</td>
+<td>$form.text("end", "", $end)</td>
+<td>$form.submit("submit", $i18n.calendar.query)</td></tr>
 </table>
 </form>
 
-#parse "/footer.wm"
+#parse ("/footer.wm")

@@ -3,19 +3,17 @@
 
 package whowhere.logic;
 
-import org.webmacro.*;
-import org.webmacro.servlet.WebContext;
-
 import com.samskivert.servlet.user.*;
+import com.samskivert.servlet.util.ParameterUtil;
 import com.samskivert.servlet.util.RequestUtils;
-import com.samskivert.webmacro.*;
+import com.samskivert.velocity.*;
 
 import whowhere.WhoWhere;
 import whowhere.data.*;
 
 public class friends implements Logic
 {
-    public void invoke (Application app, WebContext ctx)
+    public void invoke (Application app, InvocationContext ctx)
         throws Exception
     {
         UserManager usermgr = ((WhoWhere)app).getUserManager();
@@ -27,9 +25,10 @@ public class friends implements Logic
 
 	// if they've submitted the form, they want to delete someone from
 	// their friends list
-	if (FormUtil.equals(ctx, "action", "delete")) {
-            int friendid = FormUtil.requireIntParameter(
-                ctx, "who", "friends.error.missing_friendid");
+	if (ParameterUtil.parameterEquals(
+            ctx.getRequest(), "action", "delete")) {
+            int friendid = ParameterUtil.requireIntParameter(
+                ctx.getRequest(), "who", "friends.error.missing_friendid");
             rep.excommunicate(user.userid, friendid);
 
             // let them know that we've done the deed

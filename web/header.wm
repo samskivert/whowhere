@@ -1,12 +1,12 @@
 ## This is the header and footer color
-#set $hcolor = "#CCCCCC"
+#set ($hcolor = "#CCCCCC")
 ## These colors are used for common UI elements
-#set $tcolor = "#99CCFF"
-#set $scolor = "#CCCCCC"
+#set ($tcolor = "#99CCFF")
+#set ($scolor = "#CCCCCC")
 
 <html>
 <head>
-<title>$Msg.header.combined_title($title)</title>
+<title>$i18n.header.combined_title($title)</title>
 <link rel="stylesheet" type="text/css" href="/whowhere/style.css">
 </head>
 
@@ -14,7 +14,7 @@
 
 <table cellpadding="6" cellspacing="0" border="0" width="100%">
 <tr bgcolor="$hcolor"><td align=right>
-<span class="big"><b>$Msg.header.title</b></span><br>
+<span class="big"><b>$i18n.header.title</b></span><br>
 $title</td>
 </table>
 
