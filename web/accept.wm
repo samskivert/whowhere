@@ -42,6 +42,8 @@
 <form action="accept.wm">
 <input type="hidden" name="action" value="accept">
 <input type="hidden" name="who" value="$Form.who">
+<input type="hidden" name="when" value="$Form.when">
+<input type="hidden" name="how" value="$Form.how">
 
 <tr><td colspan="4" align="right" bgcolor="$scolor">
 <input type="submit" name="submit" value="$Msg.accept.accept.submit"></td></tr>
