@@ -12,7 +12,7 @@
 
 <body bgcolor="#FFFFFF" vlink="#003366">
 
-<table cellpadding=6 cellspacing=0 border=0 width="600">
+<table cellpadding="6" cellspacing="0" border="0" width="600">
 <tr bgcolor="$hcolor"><td align=right>
 <span class="big"><b>$Msg.header.title</b></span><br>
 $title
@@ -20,7 +20,7 @@ $title
 </table>
 
 #if ($error)
-  <table>
+  <table cellpadding="6" cellspacing="0" border="0" width="600">
   <tr><td><font color="#FF0000">$error</font></td></tr>
   </table>
 #end
