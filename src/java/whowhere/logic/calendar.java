@@ -21,25 +21,22 @@ public class calendar implements Logic
         throws Exception
     {
         UserManager usermgr = ((WhoWhere)app).getUserManager();
-
-	// parse the dates we were given, if we were given any
-	Bag wform = (Bag)ctx.getProperty("Form");
-	String begin = (String)wform.get("begin");
-	String end = (String)wform.get("end");
-	java.sql.Date endingAfter = null, startingBefore = null;
         String errmsg = null;
 
-	if (begin != null && end != null) {
-	    endingAfter = new java.sql.Date(_qfmt.parse(begin).getTime());
-	    if (endingAfter == null) {
-		errmsg = "calendar.error.invalid_begin_date";
-	    }
-	    startingBefore = new java.sql.Date(_qfmt.parse(end).getTime());
-	    if (startingBefore == null) {
-		errmsg = "calendar.error.invalid_end_date";
-	    }
-	}
+	// parse the dates we were given, if we were given any
+        Date ea = FormUtil.getDateParameter(
+            ctx, "begin", "calendar.error.invalid_begin_date");
+        Date sb = FormUtil.getDateParameter(
+            ctx, "end", "calendar.error.invalid_end_date");
+	java.sql.Date endingAfter = null;
+        java.sql.Date startingBefore = null;
 
+        if (ea != null && sb != null) {
+            endingAfter = new java.sql.Date(ea.getTime());
+            startingBefore = new java.sql.Date(sb.getTime());
+        }
+
+        // if either date is missing, create our own dates
 	if (endingAfter == null || startingBefore == null) {
 	    Calendar cal = Calendar.getInstance();
 	    endingAfter = new java.sql.Date(cal.getTime().getTime());
@@ -48,10 +45,8 @@ public class calendar implements Logic
 	}
 
 	// stick the dates back into the context for use by the form
-	Hashtable form = new Hashtable();
-	form.put("begin", _qfmt.format(endingAfter));
-	form.put("end", _qfmt.format(startingBefore));
-	ctx.put("Form", form);
+	ctx.put("begin", _qfmt.format(endingAfter));
+	ctx.put("end", _qfmt.format(startingBefore));
 
 	// load up the trips
         Repository rep = ((WhoWhere)app).getRepository();
