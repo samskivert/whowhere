@@ -23,28 +23,32 @@ public class calendar implements Logic
         UserManager usermgr = ((WhoWhere)app).getUserManager();
         String errmsg = null;
 
+        // generate some default dates
+        Calendar cal = Calendar.getInstance();
+        java.sql.Date endingAfter =
+            new java.sql.Date(cal.getTime().getTime());
+        cal.add(Calendar.YEAR, 1);
+        java.sql.Date startingBefore =
+            new java.sql.Date(cal.getTime().getTime());
+
+	// put the default values into "begin" and "end" in case parsing
+	// goes awry before we get a chance to put something reasonable in
+	// there
+	ctx.put("begin", _qfmt.format(endingAfter));
+	ctx.put("end", _qfmt.format(startingBefore));
+
 	// parse the dates we were given, if we were given any
         Date ea = FormUtil.getDateParameter(
             ctx, "begin", "calendar.error.invalid_begin_date");
         Date sb = FormUtil.getDateParameter(
             ctx, "end", "calendar.error.invalid_end_date");
-	java.sql.Date endingAfter = null;
-        java.sql.Date startingBefore = null;
 
         if (ea != null && sb != null) {
             endingAfter = new java.sql.Date(ea.getTime());
             startingBefore = new java.sql.Date(sb.getTime());
         }
 
-        // if either date is missing, create our own dates
-	if (endingAfter == null || startingBefore == null) {
-	    Calendar cal = Calendar.getInstance();
-	    endingAfter = new java.sql.Date(cal.getTime().getTime());
-	    cal.add(Calendar.YEAR, 1);
-	    startingBefore = new java.sql.Date(cal.getTime().getTime());
-	}
-
-	// stick the dates back into the context for use by the form
+	// stick the new dates into the context for use by the form
 	ctx.put("begin", _qfmt.format(endingAfter));
 	ctx.put("end", _qfmt.format(startingBefore));
 
