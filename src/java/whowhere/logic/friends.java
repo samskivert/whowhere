@@ -42,7 +42,7 @@ public class friends implements Logic
 
         // now load up their circle of friends
         int[] fids = rep.loadCircle(user.userid, false);
-        String[] names = urep.loadUserNames(fids);
+        String[] names = urep.loadRealNames(fids);
 
         // make the names and ids available to the page
         ctx.put("fids", fids);
