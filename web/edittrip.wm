@@ -3,7 +3,6 @@
 
 <p>
 #if ($trip) {
-#escape $trip
 <form action="edittrip.wm">
 <input type="hidden" name="tripid" value="$trip.tripid">
 <input type="hidden" name="action" value="update">
