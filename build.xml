@@ -13,25 +13,21 @@
 
   <!-- prepares the application directories -->
   <target name="prepare">
-    <mkdir  dir="${deploy.home}"/>
+    <mkdir dir="${deploy.home}"/>
     <copy todir="${deploy.home}">
       <fileset dir="web"/>
     </copy>
-    <mkdir  dir="${deploy.home}/WEB-INF"/>
-    <copy  file="etc/web.xml" tofile="${deploy.home}/WEB-INF/web.xml"/>
+    <mkdir dir="${deploy.home}/WEB-INF"/>
+    <copy file="etc/web.xml" tofile="${deploy.home}/WEB-INF/web.xml"/>
     <copy todir="${deploy.home}/WEB-INF/classes">
-      <fileset dir="etc">
-        <patternset>
-	  <include name="**/*.properties"/>
-	</patternset>
-      </fileset>
+      <fileset dir="etc" includes="**/*.properties"/>
     </copy>
-    <mkdir  dir="${deploy.home}/WEB-INF/classes"/>
-    <mkdir  dir="${deploy.home}/WEB-INF/lib"/>
+    <mkdir dir="${deploy.home}/WEB-INF/classes"/>
+    <mkdir dir="${deploy.home}/WEB-INF/lib"/>
     <copy todir="${deploy.home}/WEB-INF/lib">
       <fileset dir="lib"/>
     </copy>
-    <mkdir  dir="${javadoc.home}"/>
+    <mkdir dir="${javadoc.home}"/>
   </target>
 
   <!-- cleans out the installed application -->
@@ -44,13 +40,12 @@
     <javac srcdir="src" destdir="${deploy.home}/WEB-INF/classes"
            debug="on" optimize="off" deprecation="on">
       <classpath>
+        <pathelement location="/usr/share/java/servlet-2.2.jar"/>
         <pathelement location="${deploy.home}/WEB-INF/classes"/>
-        <fileset dir="lib">
-          <include name="**/*.jar" />
-        </fileset>
+        <fileset dir="lib" includes="**/*.jar"/>
       </classpath>
     </javac>
-    <copy   todir="${deploy.home}/WEB-INF/classes">
+    <copy todir="${deploy.home}/WEB-INF/classes">
       <fileset dir="src" includes="**/*.properties"/>
     </copy>
   </target>
@@ -58,7 +53,7 @@
   <!-- build the javadoc documentation -->
   <target name="javadoc" depends="prepare">
     <javadoc sourcepath="src" packagenames="*"
-                destdir="${javadoc.home}"/>
+             destdir="${javadoc.home}"/>
   </target>
 
   <!-- the default target is to rebuild everything -->

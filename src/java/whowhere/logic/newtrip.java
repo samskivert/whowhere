@@ -30,26 +30,26 @@ public class newtrip implements Logic
 	    // parse our fields
 	    trip.destination =
 		FormUtil.requireParameter(context, "destination",
-					  "error.missing_destination");
+					  "err.missing_destination");
 	    Date date = 
 		FormUtil.requireDateParameter(context, "begins",
-					      "error.invalid_begins");
+					      "err.invalid_begins");
 	    trip.begins = new java.sql.Date(date.getTime());
 	    date =
 		FormUtil.requireDateParameter(context, "ends",
-					      "error.invalid_ends");
+					      "err.invalid_ends");
 	    trip.ends = new java.sql.Date(date.getTime());
 
 	    // check those new dates for sense and sensibility
 	    if (trip.begins.compareTo(trip.ends) > 0) {
-		throw new DataValidationException("error.ends_before_begins");
+		throw new DataValidationException("err.ends_before_begins");
 	    }
 
 	    // insert the trip into the repository
 	    WhoWhere.repository.insertTrip(trip);
 
 	    // let the user know we updated
-	    context.put("error", "message.trip_created");
+	    context.put("error", "msg.trip_created");
 
 	    // also cause the trip creation form not to be displayed
 	    context.put("noform", "true");
@@ -58,9 +58,9 @@ public class newtrip implements Logic
 	    // create defaults for the form values
 	    Hashtable defaults = new Hashtable();
 	    defaults.put("travelerid", "1");
-	    defaults.put("destination", "message.default_destination");
-	    defaults.put("begins", "message.default_begins");
-	    defaults.put("ends", "message.default_ends");
+	    defaults.put("destination", "msg.default_destination");
+	    defaults.put("begins", "msg.default_begins");
+	    defaults.put("ends", "msg.default_ends");
 	    context.put("Form", defaults);
 	}
     }

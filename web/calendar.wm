@@ -1,4 +1,4 @@
-#set $title = "Upcoming trips"
+#set $title = $Msg.calendar.title
 #parse "/whowhere/header.wm"
 
 #if $markers {
@@ -23,18 +23,18 @@ $marker.text()
 } #else {
 <table cellpadding="10" cellspacing="4" border="0">
 <tr><td valign="top" bgcolor="#99CC66">
-No trips fall into the selected time frame.
+$Msg.calendar.no_trips
 </td></tr>
 </table>
 }
 
 <form action="calendar.wm">
 <table>
-<tr><td>Viewing trips from</td>
+<tr><td>$Msg.calendar.viewing_trips</td>
 <td><input type="text" name="begin" value="$Form.begin"></td>
-<td>to</td>
+<td>$Msg.calendar.to</td>
 <td><input type="text" name="end" value="$Form.end"></td>
-<td><input type="submit" name="submit" value="Query"></td></tr>
+<td><input type="submit" name="submit" value="$Msg.calendar.query"></td></tr>
 </table>
 </form>
 

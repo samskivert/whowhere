@@ -10,6 +10,7 @@ import com.samskivert.util.IntIntMap;
 import com.samskivert.webmacro.*;
 import com.samskivert.servlet.user.*;
 import org.webmacro.servlet.WebContext;
+import org.webmacro.util.Bag;
 
 import whowhere.*;
 import whowhere.data.*;
@@ -19,18 +20,19 @@ public class calendar implements Logic
     public void invoke (WebContext context) throws Exception
     {
 	// parse the dates we were given, if we were given any
-	String begin = context.getForm("begin");
-	String end = context.getForm("end");
+	Bag wform = (Bag)context.getProperty("Form");
+	String begin = (String)wform.get("begin");
+	String end = (String)wform.get("end");
 	java.sql.Date endingAfter = null, startingBefore = null;
 
 	if (begin != null && end != null) {
 	    endingAfter = new java.sql.Date(_qfmt.parse(begin).getTime());
 	    if (endingAfter == null) {
-		context.put("error", "error.invalid_begin_date");
+		context.put("error", "err.invalid_begin_date");
 	    }
 	    startingBefore = new java.sql.Date(_qfmt.parse(end).getTime());
 	    if (startingBefore == null) {
-		context.put("error", "error.invalid_end_date");
+		context.put("error", "err.invalid_end_date");
 	    }
 	}
 
