@@ -53,6 +53,8 @@ public class edittrip implements Logic
 	    date = FormUtil.requireDateParameter(
                 ctx, "ends", "edittrip.error.invalid_ends");
 	    trip.ends = new java.sql.Date(date.getTime());
+            trip.description = FormUtil.getParameter(
+                ctx, "description", false);
 
 	    // check those new dates for sense and sensibility
 	    if (trip.begins.compareTo(trip.ends) > 0) {

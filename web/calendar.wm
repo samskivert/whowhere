@@ -18,7 +18,16 @@
 <tr>
 }
 <td valign="top" rowspan="$marker.rowspan" bgcolor="$marker.bgcolor()">
+#if ($marker.trip) {
+<b>$marker.trip.destination</b><br>
+<div class="small">$Msg.calendar.duration($marker.begins(), $marker.ends())
+#if ($marker.trip.description) {
+<br>$marker.trip.description
+}
+</div>
+} #else {
 $marker.text()
+}
 #if (($userid != -1) && ($userid == $marker.owner())) {
 <br><a href="edittrip.wm?tripid=$marker.tripid()">[edit]</a>
 }

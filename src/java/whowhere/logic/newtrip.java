@@ -39,6 +39,8 @@ public class newtrip implements Logic
 	    date = FormUtil.requireDateParameter(
                 ctx, "ends", "newtrip.error.invalid_ends");
 	    trip.ends = new java.sql.Date(date.getTime());
+	    trip.description = FormUtil.getParameter(
+                ctx, "description", false);
 
 	    // check those new dates for sense and sensibility
 	    if (trip.begins.compareTo(trip.ends) > 0) {
@@ -67,6 +69,7 @@ public class newtrip implements Logic
 	    defaults.put("begins", msg);
             msg = app.translate(ctx, "newtrip.message.default_ends");
 	    defaults.put("ends", msg);
+	    defaults.put("description", "");
 	    ctx.put("Form", defaults);
 	}
 

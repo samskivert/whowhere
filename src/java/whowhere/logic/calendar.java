@@ -234,23 +234,18 @@ public class calendar implements Logic
 
 	public String text ()
 	{
-	    if (trip != null) {
-		StringBuffer buf = new StringBuffer();
-		buf.append("<b>");
-		buf.append(trip.destination).append("</b><br>");
-		buf.append("<font size=\"-2\">");
-		buf.append(_mdfmt.format(trip.begins)).append(" to ");
-		buf.append(_mdfmt.format(trip.ends));
-		buf.append("</font>");
-		return buf.toString();
+	    return _text == null ? "&nbsp;" : _text;
+        }
 
-	    } else if (_text != null) {
-		return _text;
+	public String begins ()
+	{
+	    return _mdfmt.format(trip.begins);
+        }
 
-	    } else {
-		return "&nbsp;";
-	    }
-	}
+	public String ends ()
+	{
+	    return _mdfmt.format(trip.ends);
+        }
 
 	public String bgcolor ()
 	{

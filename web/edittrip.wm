@@ -3,36 +3,45 @@
 
 <p>
 #if $trip {
+#escape $trip
 <form action="edittrip.wm">
 <input type="hidden" name="tripid" value="$trip.tripid">
 <input type="hidden" name="action" value="update">
 
 <table cellpadding="4" cellspacing="0" border="0">
-<tr><td bgcolor="$tcolor" colspan="2">
+<tr><td bgcolor="$tcolor" colspan="4">
 <b>$Msg.edittrip.edit.title</b></td></td>
 
 <tr><td align="right">$Msg.edittrip.edit.destination</td>
-<td><input type="text" name="destination" value="$trip.destination"></td></tr>
+<td colspan="3">
+<input type="text" name="destination" value="$trip.destination" size="40">
+</td></tr>
 <tr><td align="right">$Msg.edittrip.edit.begins</td>
-<td><input type="text" name="begins" value="$trip.begins"></td></tr>
-<tr><td align="right">$Msg.edittrip.edit.ends</td>
-<td><input type="text" name="ends" value="$trip.ends"></td></tr>
+<td><font face="courier">
+<input type="text" name="begins" value="$trip.begins" size="10">
+</font></td>
+<td align="right">$Msg.edittrip.edit.ends</td>
+<td><font face="courier">
+<input type="text" name="ends" value="$trip.ends" size="10">
+</font></td></tr>
 <tr><td align="right">$Msg.edittrip.edit.description</td>
-<td><input type="text" name="description" value="$trip.description"></td></tr>
+<td colspan="3">
+<input type="text" name="description" value="$trip.description" size="40">
+</td></tr>
 
-<tr><td colspan="2" align="right" bgcolor="$scolor">
+<tr><td colspan="4" align="right" bgcolor="$scolor">
 <input type="submit" name="submit" value="$Msg.edittrip.edit.submit"></td></tr>
 </form>
 
-<tr><td colspan="2">&nbsp;</td></td>
+<tr><td colspan="4">&nbsp;</td></td>
 
-<tr><td bgcolor="$tcolor" colspan="2">
+<tr><td bgcolor="$tcolor" colspan="4">
 <b>$Msg.edittrip.delete.title</b></td></td>
 
 <form action="edittrip.wm">
 <input type="hidden" name="tripid" value="$trip.tripid">
 <input type="hidden" name="action" value="delete">
-<tr><td colspan="2" align="right" bgcolor="$scolor">
+<tr><td colspan="4" align="right" bgcolor="$scolor">
 <input type="submit" name="submit" value="$Msg.edittrip.delete.submit"></td></tr>
 </form>
 

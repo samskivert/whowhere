@@ -9,20 +9,30 @@
 }
 
 <table cellpadding="4" cellspacing="0" border="0">
-<tr><td bgcolor="$tcolor" colspan="2">
+<tr><td bgcolor="$tcolor" colspan="4">
 <b>$Msg.newtrip.create.title</b></td></td>
 
 <form action="newtrip.wm">
 <input type="hidden" name="action" value="create">
 
 <tr><td align="right">$Msg.newtrip.create.destination</td>
-<td><input type="text" name="destination" value="$Form.destination"></td></tr>
+<td colspan="3">
+<input type="text" name="destination" value="$Form.destination" size="40">
+</td></tr>
 <tr><td align="right">$Msg.newtrip.create.begins</td>
-<td><input type="text" name="begins" value="$Form.begins"></td></tr>
-<tr><td align="right">$Msg.newtrip.create.ends</td>
-<td><input type="text" name="ends" value="$Form.ends"></td></tr>
+<td><font face="courier">
+<input type="text" name="begins" value="$Form.begins" size="10">
+</font></td>
+<td align="right">$Msg.newtrip.create.ends</td>
+<td><font face="courier">
+<input type="text" name="ends" value="$Form.ends" size="10">
+</font></td></tr>
+<tr><td align="right">$Msg.newtrip.create.description</td>
+<td colspan="3">
+<input type="text" name="description" value="$Form.description" size="40"><br>
+<div class="small">$Msg.newtrip.create.descrip_howto</div></td></tr>
 
-<tr><td colspan="2" align="right" bgcolor="$scolor">
+<tr><td colspan="4" align="right" bgcolor="$scolor">
 <input type="submit" name="submit" value="$Msg.newtrip.create.submit"></td></tr>
 </form>
 </table>
