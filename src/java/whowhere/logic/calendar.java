@@ -326,7 +326,7 @@ public class calendar implements Logic
     // go2palette lives on!
     protected static String[] COLORS = {
         "#6699CC", "#CC6600", "#FFCC33", "#CC6666", "#996699", "#99CC66",
-        "#0066FF", "#FF9900", "#FFFF33", "#FF0033", "#9933FF", "#00CC00",
         "#99CCFF", "#FFCC66", "#FFFF99", "#FFCCCC", "#CCCCFF", "#CCFF99",
+        "#0066FF", "#FF9900", "#FFFF33", "#FF0033", "#9933FF", "#00CC00",
     };
 }
